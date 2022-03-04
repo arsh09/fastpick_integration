@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <arg name="color_topic" default="/color/image_raw" />
+    <arg name="depth_topic" default="/aligned_depth_to_color/image_raw" />
+    <arg name="caminfo_topic" default="/aligned_depth_to_color/camera_info" />
+    <arg name="berry_results"  default="/detected_berries" />
+    <arg name="model_path"  default="" />
+
+    <!-- processed depth, color and camera info topics -->
+    <arg name="re_color_topic_" default="/fastpick_perception/color" />
+    <arg name="re_depth_fg_topic_" default="/fastpick_perception/depth_berry"  />
+    <arg name="re_depth_bg_topic_" default="/fastpick_perception/depth_background"  />
+    <arg name="re_caminfo_topic_" default="/fastpick_perception/camera_info"  />
+    
+    <!-- detection node -->
+    <node name="fastpick_perception_detection_node" pkg="fastpick_perception" type="fastpick_berry_detection_node.py" output="screen">
+        <param name="rbg_image" value="$(arg color_topic)" type="string" />
+        <param name="berry_results" value="$(arg berry_results)" type="string" />
+        <param name="model_path" value="$(arg model_path)" type="string" />
+    </node>
+
+    <!-- depth mask filtering node -->
+    <node name="fastpick_perception_depth_filter_node" pkg="fastpick_perception" type="fastpick_filter_mask_node.py" output="screen">
+        <param name="color_topic_" value="$(arg color_topic)" type="string" />
+        <param name="depth_topic_" value="$(arg depth_topic)" type="string" />
+        <param name="caminfo_topic_" value="$(arg caminfo_topic)" type="string" />
+        <param name="berry_topic" value="$(arg berry_results)" type="string" />
+        <param name="model_path" value="$(arg model_path)" type="string" /> 
+
+        <!-- republish topics  -->
+        <param name="re_color_topic_" value="$(arg re_color_topic_)" type="string" />
+        <param name="re_depth_fg_topic_" value="$(arg re_depth_fg_topic_)" type="string" />
+        <param name="re_depth_bg_topic_" value="$(arg re_depth_bg_topic_)" type="string" />
+        <param name="re_caminfo_topic_" value="$(arg re_caminfo_topic_)" type="string" />
+    </node>
+
+    <!-- depth masks to pointcloud -->
+    <node pkg="nodelet" type="nodelet" args="manager" name="detected_image_to_pc" output="screen"/>
+    
+    <node pkg="nodelet" type="nodelet" name="berry_depth_mask_to_pc_node" args="load depth_image_proc/point_cloud_xyzrgb detected_image_to_pc">
+      <remap from="depth_registered/image_rect" to="$(arg re_depth_fg_topic_)"/>
+      <remap from="rgb/camera_info"             to="$(arg re_caminfo_topic_)"/>
+      <remap from="rgb/image_rect_color"        to="$(arg re_color_topic_)"/>
+      <remap from="/depth_registered/points"        to="/fastpick_perception/berry_points"/>
+    </node>
+ 
+     <node pkg="nodelet" type="nodelet" name="background_depth_mask_to_pc_node" args="load depth_image_proc/point_cloud_xyzrgb detected_image_to_pc">
+      <remap from="depth_registered/image_rect" to="$(arg re_depth_bg_topic_)"/>
+      <remap from="rgb/camera_info"             to="$(arg re_caminfo_topic_)"/>
+      <remap from="rgb/image_rect_color"        to="$(arg re_color_topic_)"/>
+      <remap from="/depth_registered/points"        to="/fastpick_perception/background_points"/>
+    </node>
+
+</launch>
