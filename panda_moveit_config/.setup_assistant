@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: fastpick_description
+    relative_path: xacro/franka_arm.urdf.xacro
+    xacro_args: hand:=true
+  SRDF:
+    relative_path: config/panda_arm_hand.srdf.xacro
+  CONFIG:
+    author_name: Muhammad Arshad
+    author_email: muhammadarshad0910@gmail.com
+    generated_timestamp: 1646315832

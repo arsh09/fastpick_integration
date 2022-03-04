@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <arg name="load_gripper" default="true" />
+
+    <include file="$(find panda_moveit_config)/launch/move_group.launch">
+        <arg name="fake_execution" value="false"/>
+        <arg name="load_gripper" value="$(arg load_gripper)"/>
+    </include>
+
+    <include file="$(find panda_moveit_config)/launch/moveit_rviz.launch">
+    </include>
+
+</launch>

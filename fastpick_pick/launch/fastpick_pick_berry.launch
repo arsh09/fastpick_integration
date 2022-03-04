@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <arg name="which_berry" default="true" />
+
+    <node name="fastpick_pick_node" type="pick_action_node.py" pkg="fastpick_pick" output="screen">
+        <param name="berry_frame" value="$(arg which_berry)"/>
+    </node>
+</launch>

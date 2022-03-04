@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>fastpick_description</name>
+  <version>0.0.0</version>
+  <description>The fastpick_description package</description>
+
+  <maintainer email="inb-franka-c@todo.todo">inb-franka-c</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+
+  </export>
+</package>

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <arg name="robot_ip" default="172.16.0.2" />
+    <arg name="load_gripper" default="true" />
+    <arg name="load_camera" default="true" />
+
+    <!-- start control -->
+    <include file="$(find fastpick_bringup)/launch/fastpick_bringup_control.launch">
+      <arg name="robot_ip"      value="$(arg robot_ip)"/>
+      <arg name="load_gripper"  value="$(arg load_gripper)"/>
+    </include>
+
+    <!-- start camera -->
+    <include file="$(find fastpick_bringup)/launch/fastpick_bringup_camera.launch">
+      <arg name="load_camera"   value="$(arg load_camera)"/>
+    </include>
+
+    <!-- start perception pipeline -->
+    <!-- <include file="$(find fastpick_perception)/launch/fastpick_perception_bringup.launch">
+    </include> -->
+
+    <!-- start manipulation pipeline -->
+    <include file="$(find fastpick_bringup)/launch/fastpick_bringup_moveit.launch">
+      <arg name="load_gripper"  value="$(arg load_gripper)"/>
+    </include>
+
+</launch>
