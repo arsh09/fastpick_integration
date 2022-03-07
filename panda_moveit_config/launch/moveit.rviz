@@ -4,6 +4,9 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
+        - /MotionPlanning1
+        - /MotionPlanning1/Scene Robot1
         - /MotionPlanning1/Planning Request1
         - /Transformations1/Frames1
         - /Transformations1/Tree1
@@ -48,7 +51,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Acceleration_Scaling_Factor: 1
+    - Acceleration_Scaling_Factor: 0.15
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
@@ -402,8 +405,6 @@ Visualization Manager:
           Value: true
         berry_3:
           Value: true
-        berry_4:
-          Value: true
         camera_support_link:
           Value: false
         fastpick_grasp_link:
@@ -464,6 +465,8 @@ Visualization Manager:
           Value: false
         top_camera_right_ir_optical_frame:
           Value: false
+        world:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 0.5
       Name: Transformations
@@ -472,6 +475,12 @@ Visualization Manager:
       Show Names: true
       Tree:
         panda_link0:
+          berry_1:
+            {}
+          berry_2:
+            {}
+          berry_3:
+            {}
           panda_link1:
             panda_link2:
               panda_link3:
@@ -483,14 +492,7 @@ Visualization Manager:
                           camera_support_link:
                             fastpick_grasp_link:
                               top_camera_color_optical_frame:
-                                berry_1:
-                                  {}
-                                berry_2:
-                                  {}
-                                berry_3:
-                                  {}
-                                berry_4:
-                                  {}
+                                {}
                             top_camera_link:
                               top_camera_aligned_depth_to_color_frame:
                                 {}
@@ -519,6 +521,8 @@ Visualization Manager:
                               {}
                             panda_rightfinger:
                               {}
+          world:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/Image
@@ -561,7 +565,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: panda_link0
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -574,7 +578,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.3541178703308105
+      Distance: 2.712592601776123
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -590,9 +594,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2353975474834442
+      Pitch: 0.43539637327194214
       Target Frame: panda_link0
-      Yaw: 0.6953854560852051
+      Yaw: 2.173571825027466
     Saved: ~
 Window Geometry:
   Camera Color Feed:

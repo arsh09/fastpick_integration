@@ -14,6 +14,10 @@
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" 
   args="0.0816924 0.0403853 0.076   0.711063 -0.702927 0.00637391 -0.0155551  fastpick_grasp_link top_camera_color_optical_frame 100" />
       
+
+  <node pkg="tf" type="static_transform_publisher" name="world_link_broadcaster" 
+  args="0.001 0.0 0.0  0.0 0.0 0.0  panda_link0 world 100" />
+      
   <include file="$(find franka_gripper)/launch/franka_gripper.launch" if="$(arg load_gripper)">
     <arg name="robot_ip" value="$(arg robot_ip)" />
   </include>

@@ -27,7 +27,6 @@ import tf as tf1_ros
 import tf2_ros 
 import pyrealsense2
 
-
 class MaskToDepthFilter:
 
     def __init__(self):
@@ -94,11 +93,6 @@ class MaskToDepthFilter:
         berry_pose.pose.orientation.z = 0.0 
         berry_pose.pose.orientation.w = 1.0 
 
-        # berry_pose.pose.orientation.x = self.base_to_grasp_link_transform.transform.rotation.x
-        # berry_pose.pose.orientation.y = self.base_to_grasp_link_transform.transform.rotation.y
-        # berry_pose.pose.orientation.z = self.base_to_grasp_link_transform.transform.rotation.z
-        # berry_pose.pose.orientation.w = self.base_to_grasp_link_transform.transform.rotation.w
-
         self.scene.add_sphere( "test" , berry_pose, radius = 0.015 )
 
     def rgb_img_cb(self, data):
@@ -138,6 +132,7 @@ class MaskToDepthFilter:
             rot = self.base_to_cam_transform.transform.rotation
             rotation = [ rot.x, rot.y, rot.z, rot.w ]
 
+        rotation = [0.0, 0.0, 0.0 , 1.0]
 
         _t = self.base_to_cam_transform.transform.translation
         _r = self.base_to_cam_transform.transform.rotation
@@ -159,7 +154,7 @@ class MaskToDepthFilter:
         _berry_transform.child_frame_id = child_frame_id 
         _berry_transform.transform.translation.x = base_to_berry_translation[0]
         _berry_transform.transform.translation.y = base_to_berry_translation[1]
-        _berry_transform.transform.translation.z = base_to_berry_translation[2] - 0.05    
+        _berry_transform.transform.translation.z = base_to_berry_translation[2] 
         _berry_transform.transform.rotation.x = self.base_to_grasp_link_transform.transform.rotation.x
         _berry_transform.transform.rotation.y = self.base_to_grasp_link_transform.transform.rotation.y
         _berry_transform.transform.rotation.z = self.base_to_grasp_link_transform.transform.rotation.z
@@ -192,7 +187,7 @@ class MaskToDepthFilter:
         self.berries_in_scene = self.scene.get_known_object_names()
         
         berry_pose = PoseStamped()
-        berry_pose.header.frame_id = _berry_transform.header.frame_id
+        berry_pose.header.frame_id = "panda_link0"
         berry_pose.header.stamp = rospy.Time.now()
         berry_pose.pose.position.x = _berry_transform.transform.translation.x
         berry_pose.pose.position.y = _berry_transform.transform.translation.y
@@ -203,10 +198,9 @@ class MaskToDepthFilter:
         berry_pose.pose.orientation.z = self.base_to_grasp_link_transform.transform.rotation.z
         berry_pose.pose.orientation.w = self.base_to_grasp_link_transform.transform.rotation.w
 
-        self.scene.add_sphere( berry_name , berry_pose, radius = 0.025 )
+        self.scene.add_sphere( berry_name , berry_pose, radius = 0.015 )
 
-
-
+ 
     def draw_bbox_on_image(self, color, depth):
 
         self.base_to_cam_transform = self.find_base_to_camera_rotation( "panda_link0", "top_camera_color_optical_frame")
@@ -227,17 +221,17 @@ class MaskToDepthFilter:
 
                 # for each berry, find the depth value (in mm) 
                 # and the x,y in image plane
-                berry_depth_mask = depth.copy()
-                berry_depth_mask[indices] = 0
+                _mask_ = np.zeros( color.shape[:2] , dtype=np.uint8)
+                _mask_[indices] = 255
+                _depth_values = depth[ _mask_ == 255 ] 
                 xc , yc = (x1 + x2)/2 , (y1+y2)/2 
                 if self.depth_stats.lower() == "mean" : 
-                    depth_value = np.mean( berry_depth_mask )
+                    depth_value = np.mean( _depth_values )
                 else: 
-                    depth_value = np.median( berry_depth_mask )
+                    depth_value = np.median( _depth_values )
 
                 self.convert_berry_to_frame( xc, yc, depth_value, "berry_{}".format(berry.id))
             
-
             depth_bg = depth.copy() 
             zero_indices = np.where( full_mask == 0 )
             depth[zero_indices] = 0
@@ -256,9 +250,9 @@ class MaskToDepthFilter:
                 depth_bg_ros.header.frame_id = self.depth_frame
 
                 color_ros.header.stamp = rospy.Time().now()
-                depth_ros.header.stamp = rospy.Time().now()
-                depth_bg_ros.header.stamp = rospy.Time().now()
-                self.camera_params.header.stamp = rospy.Time().now()
+                depth_ros.header.stamp = color_ros.header.stamp
+                depth_bg_ros.header.stamp = color_ros.header.stamp
+                self.camera_params.header.stamp = color_ros.header.stamp
 
                 self.filtered_color_pub.publish( color_ros ) 
                 self.filtered_depth_fg_pub.publish( depth_ros ) 
@@ -266,7 +260,7 @@ class MaskToDepthFilter:
                 self.filtered_caminfo_pub.publish( self.camera_params )
 
         return color, depth, full_mask 
-
+ 
     def handle_exit(self):
         cv2.destroyAllWindows()
         self.rgb_img_subs.unregister()
@@ -274,19 +268,16 @@ class MaskToDepthFilter:
         self.camera_info_subs.unregister()
         rospy.loginfo("Gracefully exiting...")
 
-
     def handle_loop(self):
         
         rospy.loginfo("Starting depth mask filering node.")
+        
         while not rospy.is_shutdown():
             try:
                 if not isinstance( self.rgb_img, type(None) )  and ( not isinstance( self.depth_img, type(None) ) ):
-                    self.test_object()
                     color = self.rgb_img.copy()
                     depth = self.depth_img.copy()  
                     color, depth, mask = self.draw_bbox_on_image(color, depth)
-
-                    # cv2.imshow("Color", color )
                     k = cv2.waitKey(1)
                     if k == 27: 
                         self.handle_exit()

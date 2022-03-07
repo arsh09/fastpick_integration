@@ -28,6 +28,9 @@ class FastPickActionServer:
         self.display_trajectory_publisher = rospy.Publisher( "/move_group/display_planned_path", moveit_msgs.msg.DisplayTrajectory, queue_size=20)
         self.planned_path = None
 
+        self.group.set_max_velocity_scaling_factor(0.2)
+        self.group.set_max_acceleration_scaling_factor(0.75)
+
         self.rate = rospy.Rate(1)
 
         self.child_frame = rospy.get_param("~berry_frame", "berry_1")
@@ -39,11 +42,11 @@ class FastPickActionServer:
         if berry_transform.header.frame_id == self.parent_frame: 
             rospy.loginfo("Moving to align XY" )
             self.move_pre_grasp_align_pose_xy(berry_transform)
-            rospy.loginfo("Moving to approach Z" )
-            self.move_pre_grasp_pose_z(berry_transform)
+            # rospy.loginfo("Moving to approach Z" )
+            # self.move_pre_grasp_pose_z(berry_transform)
             _ = input ("Press y to move to ready or n to exit\n")
             if _.lower() == "y": 
-                self.move_to_named_pose( pose = "start" )     
+                self.move_to_named_pose( pose = "pick_start" )     
         sys.exit(0)
 
 
@@ -68,12 +71,11 @@ class FastPickActionServer:
     def move_pre_grasp_align_pose_xy( self, transform ):
 
         current_pose = self.group.get_current_pose()
-        current_pose.header.frame_id = transform.header.frame_id
-
+        current_pose.header.frame_id = transform.header.frame_id        
 
         current_pose.pose.position.z = transform.transform.translation.z
         current_pose.pose.position.y = transform.transform.translation.y
-        # current_pose.pose.position.x = transform.transform.translation.x
+        current_pose.pose.position.x = transform.transform.translation.x - 0.05
 
         self.group.clear_pose_targets()
         self.group.set_pose_target( current_pose ) 
@@ -86,9 +88,10 @@ class FastPickActionServer:
         current_pose.pose.position.x = transform.transform.translation.x - self.offset_z 
         self.group.clear_pose_targets()
         self.group.set_pose_target( current_pose ) 
+
         self.group.go(wait = True)
     
-    def move_to_named_pose (self, pose = "start" ) : 
+    def move_to_named_pose (self, pose = "ready" ) : 
 
         rospy.loginfo("Moving to {} pose".format(pose) )
         self.group.clear_pose_targets() 

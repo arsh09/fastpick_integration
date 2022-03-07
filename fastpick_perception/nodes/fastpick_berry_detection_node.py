@@ -81,7 +81,11 @@ class FastPickBerryDetection:
         # contours find
         cnts = cv2.findContours(thresh.copy().astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
+
         cnts = imutils.grab_contours(cnts)
+
+        cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:20]
+
         for count, cnt in enumerate(cnts): 
 
             area = cv2.contourArea(cnt)

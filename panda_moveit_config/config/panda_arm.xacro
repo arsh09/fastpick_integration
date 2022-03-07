@@ -50,6 +50,16 @@
       <joint name="panda_joint7" value="0.7457435544252466" />
     </group_state>
 
+<!-- [0.05314294423578273 -0.9757922195425274 -0.10976040384865092 -2.764346203988058 0.02037217205167416 3.016741504351298 0.6674461618982057] -->
+    <group_state name="pick_start" group="panda_arm">
+      <joint name="panda_joint1" value="0.05314294423578273" />
+      <joint name="panda_joint2" value="-0.9757922195425274" />
+      <joint name="panda_joint3" value="-0.10976040384865092" />
+      <joint name="panda_joint4" value="-2.764346203988058" />
+      <joint name="panda_joint5" value="0.02037217205167416" />
+      <joint name="panda_joint6" value="3.016741504351298" />
+      <joint name="panda_joint7" value="0.6674461618982057" />
+    </group_state>
 
 
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
