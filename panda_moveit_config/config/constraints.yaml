@@ -1,0 +1,10 @@
+
+- type: position
+  frame_id: panda_link8
+  link_name: panda_link7
+  target_offset: [0.01, 0.01, 0.01]
+  region:
+    x: [0, 1.0] # [start, end]
+    y: [0, 1.0] # [start, end]
+    z: [0, 1.0] # [start, end]
+  weight: 1.0

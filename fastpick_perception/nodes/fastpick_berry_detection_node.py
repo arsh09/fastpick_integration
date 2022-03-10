@@ -61,6 +61,7 @@ class FastPickBerryDetection:
  
     def handle_find_contour_and_bounding_box (self, image, mask ):
 
+
         use_contour = False
         use_circle = True
         use_rect = False
@@ -71,25 +72,26 @@ class FastPickBerryDetection:
 
         # preprocess before contour
         gray = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (13, 13), 0)
+        gray = cv2.GaussianBlur(gray, (5, 5), 0)
         thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY )[1] 
 
         # morph filtering
-        thresh = cv2.erode(thresh, None, iterations=2)
-        thresh = cv2.dilate(thresh, None, iterations=3)
+        thresh = cv2.erode(thresh, None, iterations=1)
+        thresh = cv2.dilate(thresh, None, iterations=7)
         
         # contours find
         cnts = cv2.findContours(thresh.copy().astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
 
         cnts = imutils.grab_contours(cnts)
-
-        cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:20]
+        
+        # cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:20]
+        cnts = sorted(cnts, key = lambda cnt: cv2.boundingRect(cnt)[0], reverse = False)[:20]
 
         for count, cnt in enumerate(cnts): 
 
             area = cv2.contourArea(cnt)
-            if (area > 500):
+            if (area > 150):
 
                 hull = cv2.convexHull(cnt)
 

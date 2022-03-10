@@ -60,3 +60,18 @@ $ roslaunch fastpick_pick fastpick_pick_berry.launch which_berry:=BERRY_FRAME
 - Add scene analyzer action client. 
 - Add comments and reformat the code 
 - Add a few tests
+
+
+### Modules 
+
+- I used rosbridge server for MaskPredictor as I do not have NVidia GPU installed. However, rosbridge server might need a lot of python3 libraries to be manually installed. These includes tornado, bson, service_identity. Keep running ```roslaunch rosbridge_server rosbrigde_websocket.launch``` and it will keep giving you ```NO module found erro``` which you can install using ```pip3 install module-name```
+
+- One of the module will be bson, which needs a specific version that comes with pymongo and you will need to run these commands to install it: 
+
+```bash
+$ pip install bson
+$ pip install hyperopt
+$ pip install hyperas
+$ sudo pip uninstall bson
+$ pip install pymongo
+```
