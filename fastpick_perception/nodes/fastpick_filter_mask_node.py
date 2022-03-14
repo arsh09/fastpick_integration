@@ -234,9 +234,19 @@ class MaskToDepthFilter:
 
                 self.convert_berry_to_frame( xc, yc, depth_value, "berry_{}".format(berry.id))
             
+            cv2.imshow("full Mask: ", full_mask)
             depth_bg = depth.copy() 
             zero_indices = np.where( full_mask == 0 )
             depth[zero_indices] = 0
+
+            # rospy.loginfo( "Min: {}Max: {}Mean: Median: {}".format( np.min( depth_bg ), np.max( depth_bg ) , np.mean( depth_bg ) , np.median( depth_bg ) )) 
+
+            # backgroun depth filter (because why not :D)
+            min_depth , max_depth = 500, 1250 # mm
+            indices_near = np.where( depth_bg < min_depth ) 
+            indices_far = np.where( depth_bg > max_depth ) 
+            depth_bg[indices_near] = 0
+            depth_bg[indices_far] = 0
 
             zero_indices = np.where( full_mask != 0 )
             depth_bg[zero_indices] = 0
