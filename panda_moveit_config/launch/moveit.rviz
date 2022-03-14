@@ -4,6 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /MotionPlanning1/Scene Geometry1
         - /Transformations1/Frames1
         - /Transformations1/Tree1
       Splitter Ratio: 0.6028708219528198
@@ -22,6 +23,32 @@ Panels:
       - /Current View1
     Name: Views
     Splitter Ratio: 0.5
+  - Class: moveit_task_constructor/Motion Planning Tasks
+    Global Settings:
+      Task View Settings:
+        Old task handling: Keep
+        Show Computation Times: true
+        Task Expansion: All Expanded
+    Name: Motion Planning Tasks
+    Tasks View:
+      property_splitter:
+        - 387
+        - 129
+      solution_sorting:
+        column: 0
+        order: 1
+      solutions_splitter:
+        - 612
+        - 306
+      solutions_view_columns:
+        - 57
+        - 58
+        - 189
+      tasks_view_columns:
+        - 439
+        - 57
+        - 57
+        - 57
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -204,6 +231,7 @@ Visualization Manager:
         State Display Time: 0.05 s
         Trail Step Size: 1
         Trajectory Topic: /move_group/display_planned_path
+        Use Sim Time: false
       Planning Metrics:
         Payload: 1
         Show Joint Torques: false
@@ -229,7 +257,7 @@ Visualization Manager:
         Scene Alpha: 0.8999999761581421
         Scene Color: 50; 230; 50
         Scene Display Time: 0.009999999776482582
-        Show Scene Geometry: true
+        Show Scene Geometry: false
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
       Scene Robot:
@@ -365,16 +393,16 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
+        Max Value: 0.6379895806312561
+        Min Value: -0.6664751172065735
         Value: true
       Axis: Z
       Channel Name: intensity
       Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: RGB8
+      Color: 252; 233; 79
+      Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -384,12 +412,12 @@ Visualization Manager:
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.009999999776482582
-      Style: Flat Squares
-      Topic: /depth/color/points
+      Style: Points
+      Topic: /fastpick_perception/berry_points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Class: rviz/TF
       Enabled: true
       Frame Timeout: 20
@@ -402,6 +430,8 @@ Visualization Manager:
         berry_3:
           Value: true
         berry_4:
+          Value: true
+        berry_5:
           Value: true
         camera_support_link:
           Value: false
@@ -480,6 +510,8 @@ Visualization Manager:
           berry_3:
             {}
           berry_4:
+            {}
+          berry_5:
             {}
           panda_link1:
             panda_link2:
@@ -561,6 +593,160 @@ Visualization Manager:
       Transport Hint: raw
       Unreliable: false
       Value: true
+    - Class: moveit_task_constructor/Motion Planning Tasks
+      Enabled: true
+      Interrupt Display: false
+      Loop Animation: false
+      Markers:
+        All at once?: false
+        Value: true
+        x +0.2: true
+      Name: Motion Planning Tasks
+      Robot:
+        Fixed Robot Color: 150; 50; 150
+        Links:
+          All Links Enabled: true
+          Expand Joint Details: false
+          Expand Link Details: false
+          Expand Tree: false
+          Link Tree Style: Links in Alphabetic Order
+          camera_support_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          fastpick_grasp_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          panda_hand:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_hand_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          panda_leftfinger:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link0:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link7:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_link8:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          panda_rightfinger:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          top_camera_color_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_color_optical_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_depth_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_depth_optical_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_fisheye_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_fisheye_optical_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_left_ir_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_left_ir_optical_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          top_camera_right_ir_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_camera_right_ir_optical_frame:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+        Robot Alpha: 0.5
+        Show Robot Collision: false
+        Show Robot Visual: true
+        Use Fixed Robot Color: false
+        Value: ""
+      Robot Description: robot_description
+      Scene:
+        Attached Body Color: 150; 50; 150
+        Scene Alpha: 0.8999999761581421
+        Scene Color: 50; 230; 50
+        Value: false
+        Voxel Coloring: Z-Axis
+        Voxel Rendering: Occupied Voxels
+      Show Trail: false
+      State Display Time: 0.05 s
+      Task Solution Topic: /mtc_tutorial/solution
+      Tasks:
+        Reusable Containers: 0
+      Trail Step Size: 1
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -578,7 +764,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 3.0117197036743164
+      Distance: 5.762856960296631
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -586,17 +772,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.4573318362236023
-        Y: 0.5988989472389221
-        Z: -2.384185791015625e-07
+        X: -0.13996100425720215
+        Y: 1.6109991073608398
+        Z: -3.5762786865234375e-07
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.15539567172527313
+      Pitch: 0.010395658202469349
       Target Frame: panda_link0
-      Yaw: 5.621742248535156
+      Yaw: 4.986732006072998
     Saved: ~
 Window Geometry:
   Camera Color Feed:
@@ -612,11 +798,15 @@ Window Geometry:
     collapsed: false
   Hide Left Dock: false
   Hide Right Dock: false
+  Motion Planning Tasks:
+    collapsed: false
+  Motion Planning Tasks - Slider:
+    collapsed: false
   MotionPlanning:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000002000000000000039a0000039efc0200000014fb000000100044006900730070006c006100790073010000003d0000013e000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a00560069006500770073000000026d000000b5000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb0000002e004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d00200053006c0069006400650072010000026f000000480000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001810000025a0000017d00fffffffb00000024005200760069007a00560069007300750061006c0054006f006f006c0073004700750069000000070b000000e40000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000034f000001fb0000000000000000fb000000120020002d00200053006c006900640065007201000002df000000480000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000032d000001fb0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000003c005400720061006a006500630074006f007200790020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000648000001a70000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000648000001a70000000000000000fb0000000a0049006d0061006700650100000342000000a20000000000000000fb0000000a00560069006500770073000000030b000000d9000000a400ffffff00000001000000da0000039efc0200000004fb0000002600480061006e0064004500790065002000430061006c006900620072006100740069006f006e000000003d000002590000000000000000fb00000020004400650070007400680020004200650072007200790020004d00610073006b010000003d000001190000001600fffffffb0000002200430061006d00650072006100200043006f006c006f007200200046006500650064010000015c0000013d0000001600fffffffb0000002a004400650070007400680020004200610063006b00670072006f0075006e00640020004d00610073006b010000029f0000013c0000001600ffffff000003000000039e00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000002000000000000039a0000039efc0200000016fb000000100044006900730070006c006100790073010000003d0000013e000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a00560069006500770073000000026d000000b5000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb0000002e004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d00200053006c0069006400650072010000026f000000480000000000000000fc000001810000025a0000019a0100001cfa000000010100000002fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b00730100000000ffffffff000000cd00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000000000000039a000001f300fffffffb00000024005200760069007a00560069007300750061006c0054006f006f006c0073004700750069000000070b000000e40000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000034f000001fb0000000000000000fb000000120020002d00200053006c006900640065007201000002df000000480000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000032d000001fb0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000003c005400720061006a006500630074006f007200790020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000648000001a70000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000648000001a70000000000000000fb0000000a0049006d0061006700650100000342000000a20000000000000000fb0000000a00560069006500770073000000030b000000d9000000a400fffffffb000000120020002d00200053006c00690064006500720000000000ffffffff0000000000000000fb0000003c004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b00730020002d00200053006c00690064006500720000000000ffffffff0000001600ffffff00000001000000da0000039efc0200000004fb0000002600480061006e0064004500790065002000430061006c006900620072006100740069006f006e000000003d000002590000000000000000fb00000020004400650070007400680020004200650072007200790020004d00610073006b010000003d000001190000001600fffffffb0000002200430061006d00650072006100200043006f006c006f007200200046006500650064010000015c0000013d0000001600fffffffb0000002a004400650070007400680020004200610063006b00670072006f0075006e00640020004d00610073006b010000029f0000013c0000001600ffffff000003000000039e00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RvizVisualToolsGui:
     collapsed: false
   Views:

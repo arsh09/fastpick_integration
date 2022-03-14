@@ -54,12 +54,11 @@
     <param name="jiggle_fraction" value="$(arg jiggle_fraction)" />
 
     <!-- load these non-default MoveGroup capabilities -->
-    <!--
+    
     <param name="capabilities" value="
-                  a_package/AwsomeMotionPlanningCapability
-                  another_package/GraspPlanningPipeline
+                  move_group/ExecuteTaskSolutionCapability
                   " />
-    -->
+   
 
     <!-- inhibit these default MoveGroup capabilities -->
     <!--

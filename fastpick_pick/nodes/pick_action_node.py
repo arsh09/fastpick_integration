@@ -48,7 +48,7 @@ class FastPickActionServer:
         self.child_frame = rospy.get_param("~berry_frame", "berry_1")
         self.howmany = rospy.get_param("~how_many", 0)
         
-        self.offset_z  = 0.15
+        self.offset_z  = 0.0
         self.pick_and_place_berry_all(n = self.howmany)
  
     def get_berry_frame(self, parent_frame, child_frame): 
@@ -172,7 +172,11 @@ class FastPickActionServer:
             self.move_to_named_pose_gripper(pose = "open")
             rospy.loginfo("Pick {} successfully. Moving to picking pose".format(berry_frame))
             self.move_to_named_pose_arm( pose = "pick_start" )     
-            time.sleep(5)
+            time.sleep(1)
+            self.move_to_named_pose_arm( pose = "place_start" )
+            time.sleep(1)
+            self.move_to_named_pose_arm( pose = "pick_start" )     
+            time.sleep(1)
         else: 
             pass
 

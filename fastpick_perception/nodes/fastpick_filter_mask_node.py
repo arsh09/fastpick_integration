@@ -126,41 +126,43 @@ class MaskToDepthFilter:
         translation = pyrealsense2.rs2_deproject_pixel_to_point(intrinsics_param, [x, y], depth )  
         translation = [ x / 1000 for x in translation ]
 
-        if self.base_to_cam_transform.header.frame_id == "":
+        if abs( translation[2] ) > 0.005 : 
+            if self.base_to_cam_transform.header.frame_id == "":
+                rotation = [0.0, 0.0, 0.0 , 1.0]
+            else: 
+                rot = self.base_to_cam_transform.transform.rotation
+                rotation = [ rot.x, rot.y, rot.z, rot.w ]
+
             rotation = [0.0, 0.0, 0.0 , 1.0]
-        else: 
-            rot = self.base_to_cam_transform.transform.rotation
-            rotation = [ rot.x, rot.y, rot.z, rot.w ]
 
-        rotation = [0.0, 0.0, 0.0 , 1.0]
+            _t = self.base_to_cam_transform.transform.translation
+            _r = self.base_to_cam_transform.transform.rotation
+            base_to_cam_translation = tf1_ros.transformations.translation_matrix( [ _t.x, _t.y, _t.z ] )
+            base_to_cam_rotation = tf1_ros.transformations.quaternion_matrix( [ _r.x, _r.y, _r.z, _r.w ] )
+            base_to_cam_tf = np.dot( base_to_cam_translation, base_to_cam_rotation )
 
-        _t = self.base_to_cam_transform.transform.translation
-        _r = self.base_to_cam_transform.transform.rotation
-        base_to_cam_translation = tf1_ros.transformations.translation_matrix( [ _t.x, _t.y, _t.z ] )
-        base_to_cam_rotation = tf1_ros.transformations.quaternion_matrix( [ _r.x, _r.y, _r.z, _r.w ] )
-        base_to_cam_tf = np.dot( base_to_cam_translation, base_to_cam_rotation )
+            cam_to_berry_translation = tf1_ros.transformations.translation_matrix( [ translation[0], translation[1], translation[2] ] )
+            cam_to_berry_rotation = tf1_ros.transformations.quaternion_matrix( [ 0.0, 0.0, 0.0, 1.0 ] )
+            cam_to_berry_tf = np.dot( cam_to_berry_translation, cam_to_berry_rotation )
 
-        cam_to_berry_translation = tf1_ros.transformations.translation_matrix( [ translation[0], translation[1], translation[2] ] )
-        cam_to_berry_rotation = tf1_ros.transformations.quaternion_matrix( [ 0.0, 0.0, 0.0, 1.0 ] )
-        cam_to_berry_tf = np.dot( cam_to_berry_translation, cam_to_berry_rotation )
+            base_to_berry_tf = np.dot( base_to_cam_tf, cam_to_berry_tf )
+            base_to_berry_translation = tf1_ros.transformations.translation_from_matrix(base_to_berry_tf)
+            base_to_berry_rotation = tf1_ros.transformations.quaternion_from_matrix(base_to_berry_tf)
+            
+            _berry_transform = TransformStamped()
+            _berry_transform.header.stamp = rospy.Time.now()
+            _berry_transform.header.frame_id = self.base_to_cam_transform.header.frame_id
+            _berry_transform.child_frame_id = child_frame_id 
+            _berry_transform.transform.translation.x = base_to_berry_translation[0]
+            _berry_transform.transform.translation.y = base_to_berry_translation[1]
+            _berry_transform.transform.translation.z = base_to_berry_translation[2] 
+            _berry_transform.transform.rotation.x = self.base_to_grasp_link_transform.transform.rotation.x
+            _berry_transform.transform.rotation.y = self.base_to_grasp_link_transform.transform.rotation.y
+            _berry_transform.transform.rotation.z = self.base_to_grasp_link_transform.transform.rotation.z
+            _berry_transform.transform.rotation.w = self.base_to_grasp_link_transform.transform.rotation.w
+    
+            berry_frame_br.sendTransform( _berry_transform )
 
-        base_to_berry_tf = np.dot( base_to_cam_tf, cam_to_berry_tf )
-        base_to_berry_translation = tf1_ros.transformations.translation_from_matrix(base_to_berry_tf)
-        base_to_berry_rotation = tf1_ros.transformations.quaternion_from_matrix(base_to_berry_tf)
-        
-        _berry_transform = TransformStamped()
-        _berry_transform.header.stamp = rospy.Time.now()
-        _berry_transform.header.frame_id = self.base_to_cam_transform.header.frame_id
-        _berry_transform.child_frame_id = child_frame_id 
-        _berry_transform.transform.translation.x = base_to_berry_translation[0]
-        _berry_transform.transform.translation.y = base_to_berry_translation[1]
-        _berry_transform.transform.translation.z = base_to_berry_translation[2] 
-        _berry_transform.transform.rotation.x = self.base_to_grasp_link_transform.transform.rotation.x
-        _berry_transform.transform.rotation.y = self.base_to_grasp_link_transform.transform.rotation.y
-        _berry_transform.transform.rotation.z = self.base_to_grasp_link_transform.transform.rotation.z
-        _berry_transform.transform.rotation.w = self.base_to_grasp_link_transform.transform.rotation.w
- 
-        berry_frame_br.sendTransform( _berry_transform )
         # self.add_berry_in_moveit_scene( _berry_transform )
 
     def find_base_to_camera_rotation(self, base_frame, camera_frame): 
