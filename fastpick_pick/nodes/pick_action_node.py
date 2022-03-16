@@ -14,12 +14,11 @@ import numpy as np
 import tf2_ros
 import time 
 
-class FastPickActionServer: 
+class FastPickPickingAndPlacingNode: 
 
     def __init__(self): 
 
         rospy.init_node("fastpick_action_server_node")
-
         moveit_commander.roscpp_initialize(sys.argv)
 
         # read params 
@@ -44,19 +43,21 @@ class FastPickActionServer:
         self.group_arm.set_planning_time(30)
         self.group_arm.set_num_planning_attempts(10)
 
-
         # clear octomap service 
         rospy.wait_for_service("/clear_octomap")
         self.map_service = rospy.ServiceProxy("/clear_octomap", Empty)
 
+        # rate used for Tf listener
         self.rate = rospy.Rate(10)
 
         # positon biases.        
-        self.offset_x  = -0.05
+        self.offset_x  = -0.035
         self.offset_y  = 0.00
         self.offset_z  = 0.00
         
+        # picking starts here.
         self.clear_octomap()
+        self.move_to_named_pose_gripper(pose="open")
         self.pick_and_place_berry_all(n = self.howmany)
 
     def clear_octomap(self): 
@@ -162,7 +163,6 @@ class FastPickActionServer:
         else: 
             pass
  
-
 if __name__ == '__main__':
 
-    fastPickActionServer = FastPickActionServer()
+    fastPickPickingAndPlacingNode = FastPickPickingAndPlacingNode()

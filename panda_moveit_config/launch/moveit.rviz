@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1/Scene Robot1
+        - /Transformations1
         - /Transformations1/Frames1
         - /Transformations1/Tree1
       Splitter Ratio: 0.6028708219528198
@@ -420,14 +421,6 @@ Visualization Manager:
       Frame Timeout: 20
       Frames:
         All Enabled: false
-        berry_1:
-          Value: true
-        berry_2:
-          Value: true
-        berry_3:
-          Value: true
-        berry_4:
-          Value: true
         camera_support_link:
           Value: false
         fastpick_grasp_link:
@@ -498,14 +491,6 @@ Visualization Manager:
       Show Names: true
       Tree:
         panda_link0:
-          berry_1:
-            {}
-          berry_2:
-            {}
-          berry_3:
-            {}
-          berry_4:
-            {}
           panda_link1:
             panda_link2:
               panda_link3:
@@ -516,11 +501,11 @@ Visualization Manager:
                         panda_link8:
                           camera_support_link:
                             fastpick_grasp_link:
-                              top_camera_color_optical_frame:
-                                {}
+                              {}
                             top_camera_link:
                               top_camera_aligned_depth_to_color_frame:
-                                {}
+                                top_camera_color_optical_frame:
+                                  {}
                               top_camera_color_frame:
                                 {}
                               top_camera_depth_frame:
@@ -651,7 +636,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.0948994159698486
+      Distance: 2.6978721618652344
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -659,17 +644,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.5792868733406067
-        Y: 0.015111327171325684
+        X: -0.21061527729034424
+        Y: -0.04311497509479523
         Z: 8.344650268554688e-07
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.290395051240921
+      Pitch: 0.14039508998394012
       Target Frame: panda_link0
-      Yaw: 2.231731414794922
+      Yaw: 0.6267330646514893
     Saved: ~
 Window Geometry:
   Camera Color Feed:
