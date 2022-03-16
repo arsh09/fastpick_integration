@@ -4,7 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /MotionPlanning1/Scene Geometry1
+        - /MotionPlanning1/Scene Robot1
         - /Transformations1/Frames1
         - /Transformations1/Tree1
       Splitter Ratio: 0.6028708219528198
@@ -254,7 +254,7 @@ Visualization Manager:
         Scene Alpha: 0.8999999761581421
         Scene Color: 50; 230; 50
         Scene Display Time: 0.009999999776482582
-        Show Scene Geometry: false
+        Show Scene Geometry: true
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
       Scene Robot:
@@ -428,16 +428,6 @@ Visualization Manager:
           Value: true
         berry_4:
           Value: true
-        berry_5:
-          Value: true
-        berry_6:
-          Value: true
-        berry_7:
-          Value: true
-        berry_8:
-          Value: true
-        berry_9:
-          Value: true
         camera_support_link:
           Value: false
         fastpick_grasp_link:
@@ -516,16 +506,6 @@ Visualization Manager:
             {}
           berry_4:
             {}
-          berry_5:
-            {}
-          berry_6:
-            {}
-          berry_7:
-            {}
-          berry_8:
-            {}
-          berry_9:
-            {}
           panda_link1:
             panda_link2:
               panda_link3:
@@ -596,7 +576,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /color/image_raw
+      Image Topic: /fastpick_perception/color
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -634,123 +614,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          camera_support_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          fastpick_grasp_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_hand:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_hand_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_leftfinger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link0:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link6:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link7:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_link8:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_rightfinger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          top_camera_color_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_color_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_depth_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_depth_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_fisheye_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_fisheye_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_left_ir_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_left_ir_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          top_camera_right_ir_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          top_camera_right_ir_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
         Robot Alpha: 0.5
         Show Robot Collision: false
         Show Robot Visual: true
@@ -788,7 +651,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.4147450923919678
+      Distance: 2.0948994159698486
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -796,17 +659,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.029724478721618652
-        Y: 0.18482649326324463
+        X: 0.5792868733406067
+        Y: 0.015111327171325684
         Z: 8.344650268554688e-07
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.775395393371582
+      Pitch: 0.290395051240921
       Target Frame: panda_link0
-      Yaw: 2.606733798980713
+      Yaw: 2.231731414794922
     Saved: ~
 Window Geometry:
   Camera Color Feed:

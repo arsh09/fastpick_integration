@@ -78,7 +78,8 @@ class FastPickBerryDetection:
         # morph filtering
         thresh = cv2.erode(thresh, None, iterations=1)
         thresh = cv2.dilate(thresh, None, iterations=7)
-        
+        # thresh = cv2.erode(thresh, None, iterations=3)
+
         # contours find
         cnts = cv2.findContours(thresh.copy().astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
