@@ -25,6 +25,7 @@ class FastPickPickingAndPlacingNode:
         arm_group_name = rospy.get_param("~arm_group", "panda_arm")
         gripper_group_name = rospy.get_param("~gripper_group", "hand")
         planner_id = rospy.get_param("~planner_id", "RRTConnect")
+        planner_pipeline_id = rospy.get_param("~pipeline_id", "ompl")
         self.howmany = rospy.get_param("~how_many", 0)
 
         # bringup robot, arm and gripper groups and scene
@@ -38,11 +39,17 @@ class FastPickPickingAndPlacingNode:
 
         # set plannar (for arm) 
         self.parent_frame = self.group_arm.get_planning_frame()
+        self.group_arm.set_planning_pipeline_id(planner_pipeline_id) 
         self.group_arm.set_planner_id(planner_id) 
-        self.group_arm.set_max_velocity_scaling_factor(0.1)
-        self.group_arm.set_max_acceleration_scaling_factor(0.1)
+        self.group_arm.set_max_velocity_scaling_factor(0.25)
+        self.group_arm.set_max_acceleration_scaling_factor(0.5)
         self.group_arm.set_planning_time(30)
         self.group_arm.set_num_planning_attempts(10)
+
+        # set planner (for gripper ) 
+        self.group_hand.set_planning_pipeline_id("ompl") 
+        self.group_hand.set_planner_id("RRTConnectkConfigDefault") 
+       
 
         # clear octomap service 
         rospy.wait_for_service("/clear_octomap")
@@ -52,9 +59,9 @@ class FastPickPickingAndPlacingNode:
         self.rate = rospy.Rate(10)
 
         # positon biases.        
-        self.offset_x  = -0.035
+        self.offset_x  = -0.05
         self.offset_y  = 0.00
-        self.offset_z  = 0.00
+        self.offset_z  = 0.05
         
         # picking starts here.
         self.clear_octomap()
@@ -80,7 +87,6 @@ class FastPickPickingAndPlacingNode:
             while not_found: 
                 try: 
                     transform = tf_buffer.lookup_transform(parent_frame, child_frame, rospy.Time(), rospy.Duration(5))
-                    transform.transform.translation.x -= self.offset_z
                     transforms[child_frame] = transform
                     break
                 except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
@@ -99,6 +105,9 @@ class FastPickPickingAndPlacingNode:
         current_pose.pose.position.x = transform.transform.translation.x + self.offset_x
         current_pose.pose.position.y = transform.transform.translation.y + self.offset_y
         current_pose.pose.position.z = transform.transform.translation.z + self.offset_z
+        
+        self.group_arm.stop()
+        self.group_arm.set_start_state_to_current_state()
         self.group_arm.clear_pose_targets()
         self.group_arm.set_pose_target( current_pose ) 
         retval = self.group_arm.go(wait = True)
@@ -159,6 +168,8 @@ class FastPickPickingAndPlacingNode:
                 time.sleep(1)
                 self.clear_octomap()
             else: 
+                self.move_to_named_pose_arm( pose = "pick_start" )     
+                time.sleep(1)
                 rospy.loginfo("Pick {} unsuccessful. We will try to pick it in next cycle. Moving to picking pose".format(berry_frame))
 
         else: 

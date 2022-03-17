@@ -6,18 +6,24 @@
         same as berry_1, berry_2 ... TF frames
     -->
     <arg name="how_many" default="1" />
+
+    <!-- 
+        1 - opml, 2 - pilz_industrial_motion_planner, 3 - chomp
+     -->
+    <arg name="pipeline_id" default="ompl" />
+
     <!-- 
         1 - For OMPL -> RRTConnect 
         2 - For PILZ -> LIN or CIRC or PTP 
-        3 - For CHOMP -> chomp
-        4 - For STOMP -> stomp
+        3 - For CHOMP -> CHOMP
      -->
-    <arg name="planner_id" default="LIN" />
+    <arg name="planner_id" default="RRTConnectkConfigDefault" />
 
 
     <node name="fastpick_pick_node" type="pick_action_node.py" pkg="fastpick_pick" output="screen">
         <param name="how_many" value="$(arg how_many)"/>
         <param name="planner_id" value="$(arg planner_id)"/>
+        <param name="pipeline_id" value="$(arg pipeline_id)"/>
         <param name="arm_group" value="panda_arm"/>
         <param name="gripper_group" value="hand"/>
     </node>

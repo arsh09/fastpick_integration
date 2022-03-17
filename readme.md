@@ -47,10 +47,15 @@ $ roslaunch fastpick_perception fastpick_perception_bringup.launch
 
 ```bash
 # terminal 2 // perception pick & place pipeline
-$ roslaunch fastpick_pick fastpick_pick_berry.launch which_berry:=BERRY_FRAME
+$ roslaunch fastpick_pick fastpick_pick_berry.launch how_many:=2
 
-# BERRY_FRAME: Should be any berry frame that are available in Berry-Detection-Results open-cv window.
+# how_many: Number of berries to pick (should be less-or-equal to the berry_n frames where n is 1,2,3,4...)
 ```
+
+
+### Planning Pipelines 
+
+I am loading three planning pipelines from MoveIt i.e. OMPL, CHOMP and PILZ Industrial Planners. The idea is to use all three or two of them. We can change the planner at run time before each plan. PILz (LIN/PTP) is useful for straight line motion (without collision detection / obstable avoidance). CHOMP provides collision free-paths at the cost of jerky motion. OMPL finds a collision free path is there is one (slower than CHOMP but smoother). We can use CHOMP with OMPL as a preprocessor to get from home pose to pre-grasp pose and then switch the planning pipeline to use LIN from PILZ pipeline for pre-grasp to grasp pose and then post-grasp pose. Then we can switch it back to OMPL/CHOMP to go to place poses. The (robotic) world is your oyster!!! :P
 
 ### ToDo
 

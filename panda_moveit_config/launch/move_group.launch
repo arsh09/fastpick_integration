@@ -8,6 +8,7 @@
 
   <arg name="pipeline" default="pilz_industrial_motion_planner" />  
   <!-- <arg name="pipeline" default="ompl" /> -->
+  <!-- <arg name="pipeline" default="stomp" /> -->
 
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
@@ -27,10 +28,26 @@
   <arg name="jiggle_fraction" default="0.05" />
   <arg name="publish_monitored_planning_scene" default="true"/>
 
-  <!-- Planning Functionality -->
-  <include ns="move_group" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
-    <arg name="pipeline" value="$(arg pipeline)" />
-  </include>
+
+  <!-- Planning Pipelines -->
+  <group ns="move_group/planning_pipelines">
+    <!-- OMPL -->
+    <include ns="ompl" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
+      <arg name="pipeline" value="ompl" />
+    </include>
+
+    <!-- CHOMP -->
+    <include ns="chomp" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
+      <arg name="pipeline" value="chomp" />
+    </include>
+
+    <!-- Pilz Industrial Motion-->
+    <include ns="pilz_industrial_motion_planner" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
+      <arg name="pipeline" value="pilz_industrial_motion_planner" />
+    </include>
+Should be any berry frame that are available in Berry-Detection-Results open-cv window.Should be any berry frame that are available in Berry-Detection-Results open-cv window.
+  </group>
+
 
   <!-- Trajectory Execution Functionality -->
   <include ns="move_group" file="$(find panda_moveit_config)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">

@@ -236,9 +236,7 @@ class MaskToDepthFilter:
             
             depth_bg = depth.copy() 
             zero_indices = np.where( full_mask == 0 )
-            depth[zero_indices] = 0
-
-            # rospy.loginfo( "Min: {}Max: {}Mean: Median: {}".format( np.min( depth_bg ), np.max( depth_bg ) , np.mean( depth_bg ) , np.median( depth_bg ) )) 
+            depth[zero_indices] = 655
 
             # backgroun depth filter (because why not :D)
             min_depth , max_depth = 5, 12500 # mm
@@ -248,7 +246,7 @@ class MaskToDepthFilter:
             depth_bg[indices_far] = 0
 
             zero_indices = np.where( full_mask != 0 )
-            depth_bg[zero_indices] = 0
+            depth_bg[zero_indices] = 65534
 
             if not ( isinstance( self.camera_params, type(None)) ):
                 # convert color and depth to ROS image
