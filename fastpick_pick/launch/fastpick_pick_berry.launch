@@ -1,11 +1,24 @@
 <?xml version="1.0" ?>
 <launch>
 
-    <arg name="which_berry" default="berry_1" />
+    <!-- 
+        Number of berries to pick, should be
+        same as berry_1, berry_2 ... TF frames
+    -->
     <arg name="how_many" default="1" />
+    <!-- 
+        1 - For OMPL -> RRTConnect 
+        2 - For PILZ -> LIN or CIRC or PTP 
+        3 - For CHOMP -> chomp
+        4 - For STOMP -> stomp
+     -->
+    <arg name="planner_id" default="LIN" />
+
 
     <node name="fastpick_pick_node" type="pick_action_node.py" pkg="fastpick_pick" output="screen">
-        <param name="berry_frame" value="$(arg which_berry)"/>
         <param name="how_many" value="$(arg how_many)"/>
+        <param name="planner_id" value="$(arg planner_id)"/>
+        <param name="arm_group" value="panda_arm"/>
+        <param name="gripper_group" value="hand"/>
     </node>
 </launch>

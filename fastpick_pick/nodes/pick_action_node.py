@@ -24,6 +24,7 @@ class FastPickPickingAndPlacingNode:
         # read params 
         arm_group_name = rospy.get_param("~arm_group", "panda_arm")
         gripper_group_name = rospy.get_param("~gripper_group", "hand")
+        planner_id = rospy.get_param("~planner_id", "RRTConnect")
         self.howmany = rospy.get_param("~how_many", 0)
 
         # bringup robot, arm and gripper groups and scene
@@ -37,9 +38,9 @@ class FastPickPickingAndPlacingNode:
 
         # set plannar (for arm) 
         self.parent_frame = self.group_arm.get_planning_frame()
-        self.group_arm.set_planner_id("RRTConnect") 
-        self.group_arm.set_max_velocity_scaling_factor(0.2)
-        self.group_arm.set_max_acceleration_scaling_factor(0.75)
+        self.group_arm.set_planner_id(planner_id) 
+        self.group_arm.set_max_velocity_scaling_factor(0.1)
+        self.group_arm.set_max_acceleration_scaling_factor(0.1)
         self.group_arm.set_planning_time(30)
         self.group_arm.set_num_planning_attempts(10)
 

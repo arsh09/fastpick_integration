@@ -1,7 +1,8 @@
 <launch>
 
   <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_broadcaster"
-      args="0.407965 0.212974 0.464685   0.72064 -0.692974 -0.0171114 -0.0131219 fastpick_grasp_link top_camera_color_optical_frame" />
+      args="0.0816924 0.0403853 0.170745   0.711063 -0.702927 0.00637391 -0.0155551 fastpick_grasp_link top_camera_color_optical_frame" />
+
 </launch>
 
 

@@ -6,7 +6,8 @@
     <arg name="load_gripper" value="$(arg load_gripper)" />
   </include>
 
-  <arg name="pipeline" default="ompl" />
+  <arg name="pipeline" default="pilz_industrial_motion_planner" />  
+  <!-- <arg name="pipeline" default="ompl" /> -->
 
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
