@@ -9,7 +9,7 @@
 
   <!-- Params for the octomap monitor -->
   <!--  <param name="octomap_frame" type="string" value="some frame in which the robot moves" /> -->
-  <param name="octomap_frame" type="string" value="world" />
+  <param name="octomap_frame" type="string" value="panda_link0" />
   <param name="octomap_resolution" type="double" value="0.005" />
   <param name="max_range" type="double" value="1.25" />
 

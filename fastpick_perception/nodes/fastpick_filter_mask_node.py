@@ -163,7 +163,7 @@ class MaskToDepthFilter:
     
             berry_frame_br.sendTransform( _berry_transform )
 
-        # self.add_berry_in_moveit_scene( _berry_transform )
+            # self.add_berry_in_moveit_scene( _berry_transform )
 
     def find_base_to_camera_rotation(self, base_frame, camera_frame): 
         tf_buffer = tf2_ros.Buffer()
@@ -200,7 +200,7 @@ class MaskToDepthFilter:
         berry_pose.pose.orientation.z = self.base_to_grasp_link_transform.transform.rotation.z
         berry_pose.pose.orientation.w = self.base_to_grasp_link_transform.transform.rotation.w
 
-        self.scene.add_sphere( berry_name , berry_pose, radius = 0.015 )
+        self.scene.add_sphere( berry_name , berry_pose, radius = 0.025 )
 
  
     def draw_bbox_on_image(self, color, depth):

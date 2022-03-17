@@ -31,21 +31,21 @@
 
   <!-- Planning Pipelines -->
   <group ns="move_group/planning_pipelines">
-    <!-- OMPL -->
-    <include ns="ompl" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
-      <arg name="pipeline" value="ompl" />
-    </include>
-
     <!-- CHOMP -->
     <include ns="chomp" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
       <arg name="pipeline" value="chomp" />
+    </include>
+
+    <!-- OMPL -->
+    <include ns="ompl" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
+      <arg name="pipeline" value="ompl" />
     </include>
 
     <!-- Pilz Industrial Motion-->
     <include ns="pilz_industrial_motion_planner" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
       <arg name="pipeline" value="pilz_industrial_motion_planner" />
     </include>
-Should be any berry frame that are available in Berry-Detection-Results open-cv window.Should be any berry frame that are available in Berry-Detection-Results open-cv window.
+
   </group>
 
 

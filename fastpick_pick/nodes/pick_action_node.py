@@ -59,12 +59,11 @@ class FastPickPickingAndPlacingNode:
         self.rate = rospy.Rate(10)
 
         # positon biases.        
-        self.offset_x  = -0.05
-        self.offset_y  = 0.00
-        self.offset_z  = 0.05
+        self.offset_x  = 0.1
+        self.offset_y  = 0.0
+        self.offset_z  = -0.025
         
         # picking starts here.
-        self.clear_octomap()
         self.move_to_named_pose_gripper(pose="open")
         self.pick_and_place_berry_all(n = self.howmany)
 
@@ -129,6 +128,7 @@ class FastPickPickingAndPlacingNode:
     def pick_and_place_berry_all(self, n = 0): 
 
         if n > 0: 
+            self.clear_octomap()
             berry_list = {}        
             berry_name_list = []
             for i in range(1, n+1): 
