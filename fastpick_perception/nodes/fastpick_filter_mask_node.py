@@ -12,11 +12,10 @@ Muhammad Arshad
 '''
 
 from __future__ import print_function
-from six.moves import input
-
 import sys
 import rospy 
 import moveit_commander
+from std_msgs.msg import Bool
 from sensor_msgs.msg import Image, CameraInfo
 from fastpick_msgs.msg import StrawberryObject, StrawberryObjects
 from geometry_msgs.msg import TransformStamped, PoseStamped
@@ -29,7 +28,7 @@ import pyrealsense2
 
 class MaskToDepthFilter:
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         moveit_commander.roscpp_initialize(sys.argv)
         self.scene = moveit_commander.PlanningSceneInterface()
@@ -46,6 +45,7 @@ class MaskToDepthFilter:
         re_caminfo_topic_ = rospy.get_param("~re_caminfo_topic_", "/fastpick_perception/camera_info")
 
         self.depth_stats = rospy.get_param("~depth_stats", "median") 
+
 
         # republish the masked depth and color (because why not)
         self.filtered_color_pub = rospy.Publisher( re_color_topic_, Image, queue_size = 5)
@@ -69,7 +69,13 @@ class MaskToDepthFilter:
         # detection topics 
         self.detected_berries = []
         self.detected_berries_subs = rospy.Subscriber(berry_topic_, StrawberryObjects, self.detected_berries_cb)
-
+        
+        # Considering that the model predicts 
+        # every red thing a berry. We should stop 
+        # publishing the TF frames for berry when the 
+        # robot starts moving. 
+        self.stop_tf = False
+        rospy.Subscriber("/fastpick_perception/stop_perception", Bool, self.stop_perception_cb)
 
         self.berries_in_scene = []
 
@@ -78,8 +84,49 @@ class MaskToDepthFilter:
         self.rate = rospy.Rate(1)
 
         self.handle_loop()
+    
+    def rgb_img_cb(self, data) -> None:
+        ''' rbg image callback for the subscriber
 
-    def test_object(self): 
+        :param data: sensor_msgs/Image
+        '''
+        self.color_encoding = data.encoding
+        self.rgb_img = self.bridge.imgmsg_to_cv2(data, desired_encoding='passthrough')
+    
+    def depth_img_cb(self, data) -> None:
+        ''' depth image callback for the subscriber
+
+        :param data: sensor_msgs/Image
+        '''
+        self.depth_encoding = data.encoding
+        self.depth_frame = data.header.frame_id
+        self.depth_img = self.bridge.imgmsg_to_cv2(data, desired_encoding="passthrough")
+        
+    def camera_info_cb(self, data ) -> None:
+        ''' camera info callback for the subscriber
+
+        :param data: sensor_msgs/CameraInfo
+        '''
+        self.camera_params = data
+
+    def detected_berries_cb(self, data):
+        ''' detected berries callback for the subscriber
+
+        :param data: fastpick_msgs/StrawberryObjects
+        '''
+        self.detected_berries = data
+
+    def stop_perception_cb(self, data) -> None:
+        ''' callback to stop perception when robot is moving. 
+
+        :param: data is std_msgs/Bool
+        ''' 
+        self.stop_tf = data.data
+
+    def test_object(self) -> None: 
+        ''' test function to check if a box 
+            can be added in the MoveIt scene. 
+        '''
         rospy.loginfo( self.scene.get_known_object_names() )
         berry_pose = PoseStamped()
         berry_pose.header.frame_id = "panda_link0"
@@ -95,22 +142,15 @@ class MaskToDepthFilter:
 
         self.scene.add_sphere( "test" , berry_pose, radius = 0.015 )
 
-    def rgb_img_cb(self, data):
-        self.color_encoding = data.encoding
-        self.rgb_img = self.bridge.imgmsg_to_cv2(data, desired_encoding='passthrough')
-    
-    def depth_img_cb(self, data):
-        self.depth_encoding = data.encoding
-        self.depth_frame = data.header.frame_id
-        self.depth_img = self.bridge.imgmsg_to_cv2(data, desired_encoding="passthrough")
-        
-    def camera_info_cb(self, data ):
-        self.camera_params = data
+    def convert_berry_to_frame(self, x : float, y : float, depth : float, child_frame_id : str ) -> None: 
+        ''' converts (x,y) in image plane and depth in depth plane 
+            and convert it to a TF w.r.t base frame. 
 
-    def detected_berries_cb(self, data):
-        self.detected_berries = data
-
-    def convert_berry_to_frame(self, x, y, depth, child_frame_id ): 
+        :param x: center of contours in x direction of color image
+        :param y: center of contours in y direction of color image
+        :param depth: depth value of contour mask of detected berry in depth image. 
+        :param child_frame_id: berry_{n} where n can be 1, 2, 3,.... 
+        '''
 
         berry_frame_br = tf2_ros.TransformBroadcaster()
         intrinsics_param = pyrealsense2.intrinsics()
@@ -165,7 +205,14 @@ class MaskToDepthFilter:
 
             # self.add_berry_in_moveit_scene( _berry_transform )
 
-    def find_base_to_camera_rotation(self, base_frame, camera_frame): 
+    def find_base_to_camera_rotation(self, base_frame : str, camera_frame : str) -> TransformStamped():
+        ''' finds the camera rotation with respect to camera. 
+            the orientation of this transformation is used for 
+            berry TF w.r.t robot base. 
+
+        :param: base_frame - normally panda_link0 or world. Fixed frame of your robot. 
+        :camera_frame - camera color optical frame where the optical sensor is attached. 
+        ''' 
         tf_buffer = tf2_ros.Buffer()
         tf_listener = tf2_ros.TransformListener(tf_buffer)
         transform = TransformStamped()
@@ -183,8 +230,12 @@ class MaskToDepthFilter:
 
         return transform
 
-    def add_berry_in_moveit_scene(self, _berry_transform ): 
+    def add_berry_in_moveit_scene(self, _berry_transform : TransformStamped() ) -> None:
+        ''' takes in the berry_transform with respect to fixed frame 
+            and publishes it to MoveIt scene. This function is NOT used. 
         
+        :param _berry_transform - TransformStamped()
+        ''' 
         berry_name = _berry_transform.child_frame_id
         self.berries_in_scene = self.scene.get_known_object_names()
         
@@ -194,21 +245,27 @@ class MaskToDepthFilter:
         berry_pose.pose.position.x = _berry_transform.transform.translation.x
         berry_pose.pose.position.y = _berry_transform.transform.translation.y
         berry_pose.pose.position.z = _berry_transform.transform.translation.z
-
         berry_pose.pose.orientation.x = self.base_to_grasp_link_transform.transform.rotation.x
         berry_pose.pose.orientation.y = self.base_to_grasp_link_transform.transform.rotation.y
         berry_pose.pose.orientation.z = self.base_to_grasp_link_transform.transform.rotation.z
         berry_pose.pose.orientation.w = self.base_to_grasp_link_transform.transform.rotation.w
-
         self.scene.add_sphere( berry_name , berry_pose, radius = 0.025 )
-
  
-    def draw_bbox_on_image(self, color, depth):
+    def draw_bbox_on_image(self, color, depth) -> (np.ndarray, np.ndarray, np.ndarray):
+        ''' find base_to_cam_transform and base_to_grasp_link transform. 
+            plots rectangle on camera color image 
+            creates berry and background masks
+            convert berry_to_frame function is used here. 
+
+        :param: color image from camera (W,H,3)
+        :param: depth image from camera (W,H). Depth should be in milimeters for np.uint16 format.
+        '''
 
         self.base_to_cam_transform = self.find_base_to_camera_rotation( "panda_link0", "top_camera_color_optical_frame")
         self.base_to_grasp_link_transform = self.find_base_to_camera_rotation( "panda_link0", "fastpick_grasp_link")
 
         full_mask = np.zeros( color.shape[:2] , dtype=np.uint8)
+
         if not ( isinstance( self.detected_berries, type([]) )):
             for berry in self.detected_berries.berries: 
 
@@ -232,7 +289,8 @@ class MaskToDepthFilter:
                 else: 
                     depth_value = np.median( _depth_values )
 
-                self.convert_berry_to_frame( xc, yc, depth_value, "berry_{}".format(berry.id))
+                if not self.stop_tf: 
+                    self.convert_berry_to_frame( xc, yc, depth_value, "berry_{}".format(berry.id))
             
             depth_bg = depth.copy() 
             zero_indices = np.where( full_mask == 0 )
@@ -270,15 +328,23 @@ class MaskToDepthFilter:
 
         return color, depth, full_mask 
  
-    def handle_exit(self):
+    def handle_exit(self) -> None:
+        ''' exit the node properly. 
+        '''
         cv2.destroyAllWindows()
         self.rgb_img_subs.unregister()
         self.depth_img_subs.unregister()
         self.camera_info_subs.unregister()
         rospy.loginfo("Gracefully exiting...")
 
-    def handle_loop(self):
-        
+    def handle_loop(self) -> None:
+        ''' - continously running loop. 
+            - checks if the depth, color images were 
+              received in respective callbacks.
+            - draws bounding box, convert 2d to 3d, pubslishes tf,
+              and masks
+            - shows image window.   
+        '''
         rospy.loginfo("Starting depth mask filering node.")
         
         while not rospy.is_shutdown():

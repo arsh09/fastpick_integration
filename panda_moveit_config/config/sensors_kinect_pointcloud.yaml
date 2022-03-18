@@ -1,6 +1,6 @@
 sensors:
   - sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
-    point_cloud_topic: /fastpick_perception/background_points1 # /depth/color/points
+    point_cloud_topic: /fastpick_perception/background_points # /depth/color/points
     max_range: 1.0
     point_subsample: 25
     padding_offset: 0.1

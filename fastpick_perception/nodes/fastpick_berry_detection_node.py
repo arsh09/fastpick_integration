@@ -26,7 +26,7 @@ from fastpick_enet_model import ENetModelPredictions
 
 class FastPickBerryDetection: 
 
-    def __init__(self): 
+    def __init__(self) -> None: 
 
         # get topic names 
         rgb_image_topic = rospy.get_param("~rbg_image", "/color/image_raw")
@@ -56,11 +56,21 @@ class FastPickBerryDetection:
         # loop function 
         self.handle_loop()
  
-    def img_rbg_callback(self, data): 
+    def img_rbg_callback(self, data : Image) -> None:
+        ''' image callback
+
+        :param data is sensor_msgs/Image, received from color image topic
+        ''' 
         self.img_rgb = self.bridge.imgmsg_to_cv2(data, desired_encoding='passthrough')
  
-    def handle_find_contour_and_bounding_box (self, image, mask ):
+    def handle_find_contour_and_bounding_box (self, image : np.ndarray, mask : np.ndarray) -> np.ndarray:
+        ''' find contours in the predicted berry mask after morphological 
+            filtering. This post-filtering is used to publish found berry 
+            msg. 
 
+        :param image is np.array((w,h,3)). 
+        :param mask is predicted mask from ENet model.
+        ''' 
 
         use_contour = False
         use_circle = True
@@ -161,7 +171,13 @@ class FastPickBerryDetection:
 
         return image 
  
-    def handle_loop(self):
+    def handle_loop(self) -> None:
+        ''' loop function that: 
+                - continously monitors color image 
+                - if image is received, pass it to ENet model. 
+                - pass the predicted mask to post-filtering  
+
+        '''
         
         rospy.loginfo("Please select '{}' window and press ESC to close the node.".format( self.cv_window_name ))
         while not rospy.is_shutdown(): 
