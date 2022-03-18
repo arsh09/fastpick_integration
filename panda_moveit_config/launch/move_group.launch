@@ -32,9 +32,9 @@
   <!-- Planning Pipelines -->
   <group ns="move_group/planning_pipelines">
     <!-- CHOMP -->
-    <include ns="chomp" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
+    <!-- <include ns="chomp" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
       <arg name="pipeline" value="chomp" />
-    </include>
+    </include> -->
 
     <!-- OMPL -->
     <include ns="ompl" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
@@ -42,9 +42,9 @@
     </include>
 
     <!-- Pilz Industrial Motion-->
-    <include ns="pilz_industrial_motion_planner" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
+    <!-- <include ns="pilz_industrial_motion_planner" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
       <arg name="pipeline" value="pilz_industrial_motion_planner" />
-    </include>
+    </include> -->
 
   </group>
 
