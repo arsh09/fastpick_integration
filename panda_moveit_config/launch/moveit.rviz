@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1/Planning Request1
+        - /Transformations1
         - /Transformations1/Tree1
       Splitter Ratio: 0.6028708219528198
     Tree Height: 257
@@ -427,6 +428,12 @@ Visualization Manager:
           Value: true
         berry_4:
           Value: true
+        berry_5:
+          Value: true
+        berry_6:
+          Value: true
+        berry_7:
+          Value: true
         camera_support_link:
           Value: false
         fastpick_grasp_link:
@@ -504,6 +511,12 @@ Visualization Manager:
           berry_3:
             {}
           berry_4:
+            {}
+          berry_5:
+            {}
+          berry_6:
+            {}
+          berry_7:
             {}
           panda_link1:
             panda_link2:
@@ -650,7 +663,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.1873111724853516
+      Distance: 2.9421629905700684
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -666,9 +679,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2653951644897461
+      Pitch: 0.2853952944278717
       Target Frame: panda_link0
-      Yaw: 1.5717345476150513
+      Yaw: 1.5617337226867676
     Saved: ~
 Window Geometry:
   Camera Color Feed:

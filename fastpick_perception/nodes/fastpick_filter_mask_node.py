@@ -122,6 +122,10 @@ class MaskToDepthFilter:
         :param: data is std_msgs/Bool
         ''' 
         self.stop_tf = data.data
+        if (self.stop_tf):
+            rospy.loginfo("Perception pipeline is stopped during robot movement")
+        else: 
+            rospy.loginfo("Perception pipeline is re-started.")
 
     def test_object(self) -> None: 
         ''' test function to check if a box 

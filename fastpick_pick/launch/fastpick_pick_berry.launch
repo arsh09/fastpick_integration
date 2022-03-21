@@ -10,21 +10,31 @@
     <!-- 
         1 - opml, 2 - pilz_industrial_motion_planner, 3 - chomp
      -->
-    <arg name="pipeline_id" default="ompl" />
+    <arg name="pipeline_id" default="pilz_industrial_motion_planner" />
 
     <!-- 
         1 - For OMPL -> RRTConnect 
         2 - For PILZ -> LIN or CIRC or PTP 
         3 - For CHOMP -> CHOMP
      -->
-    <arg name="planner_id" default="RRTConnectkConfigDefault" />
+    <arg name="planner_id" default="PTP" />
 
 
-    <node name="fastpick_pick_node" type="pick_action_node.py" pkg="fastpick_pick" output="screen">
+    <node name="fastpick_pick_node" type="pick_action_cartesian_node.py" pkg="fastpick_pick" output="screen">
         <param name="how_many" value="$(arg how_many)"/>
         <param name="planner_id" value="$(arg planner_id)"/>
         <param name="pipeline_id" value="$(arg pipeline_id)"/>
         <param name="arm_group" value="panda_arm"/>
         <param name="gripper_group" value="hand"/>
     </node>
+    
+    <!-- <node name="fastpick_pick_node" type="pick_action_node.py" pkg="fastpick_pick" output="screen">
+        <param name="how_many" value="$(arg how_many)"/>
+        <param name="planner_id" value="$(arg planner_id)"/>
+        <param name="pipeline_id" value="$(arg pipeline_id)"/>
+        <param name="arm_group" value="panda_arm"/>
+        <param name="gripper_group" value="hand"/>
+    </node> -->
+
+
 </launch>
