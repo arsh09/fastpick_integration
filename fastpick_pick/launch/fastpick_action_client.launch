@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <arg name="how_many" default="1" />
+
+    <node name="fastpick_action_client_node" type="fastpick_pick_and_place_client.py" pkg="fastpick_pick" output="screen">
+        <param name="how_many" value="$(arg how_many)"/>
+    </node>
+     
+</launch>

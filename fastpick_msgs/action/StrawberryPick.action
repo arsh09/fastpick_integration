@@ -1,0 +1,13 @@
+#goal         
+int8 num_berries_to_pick
+int8[] berry_to_ignore
+---
+#result
+int8 total
+int8 picked 
+int8 not_picked
+---
+#feedback
+string status
+int8 picked_till_now
+int8 pick_remains 
