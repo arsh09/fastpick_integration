@@ -83,6 +83,7 @@ class MaskToDepthFilter:
         self.base_to_grasp_link_transform = TransformStamped()
         self.rate = rospy.Rate(1)
 
+
         self.handle_loop()
     
     def rgb_img_cb(self, data) -> None:
@@ -126,6 +127,7 @@ class MaskToDepthFilter:
             rospy.loginfo("Perception pipeline is stopped during robot movement")
         else: 
             rospy.loginfo("Perception pipeline is re-started.")
+
 
     def test_object(self) -> None: 
         ''' test function to check if a box 

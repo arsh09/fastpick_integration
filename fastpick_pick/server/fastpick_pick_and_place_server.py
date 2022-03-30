@@ -67,8 +67,11 @@ class FastPickMoveIt():
     def set_planner_and_pipeline(self, group, pipeline, planner ) : 
         group.set_planning_pipeline_id(pipeline)
         group.set_planner_id(planner)
-        group.set_max_acceleration_scaling_factor(1.0)
-        group.set_max_velocity_scaling_factor(1.0)
+
+        # group.set_max_velocity_scaling_factor(1.0)
+        # group.set_max_acceleration_scaling_factor(1.0)
+        group.set_max_velocity_scaling_factor(0.1)
+        group.set_max_acceleration_scaling_factor(0.5)
 
     def abort_movement(self) -> None: 
         ''' abort any movement if the pick berry goal 
@@ -76,7 +79,9 @@ class FastPickMoveIt():
         '''
         goalId = GoalID()
         goalId.stamp = rospy.Time().now()
-        self._cancel_movement.publish(GoalID)
+        self.group_arm.stop()
+        self.group_arm.clear_pose_targets()
+        # self._cancel_movement.publish(GoalID)
 
     def move_to_named_pose_arm (self, pose : str = "ready" ) -> bool: 
         ''' moves the robot arm to a previously saved named pose.
@@ -146,24 +151,24 @@ class FastPickMoveIt():
         '''
         self.group_arm.stop()
         self.group_arm.clear_pose_targets()
-        plan, fraction = self.pick_and_place_cartesian_path( x, y, z, disable_collision = True )             
+        plan, fraction = self.pick_and_place_cartesian_path( x, y, z, disable_collision = False )             
         retval = self.group_arm.execute( plan, wait = True )
         if not retval : 
-            if self.log: rospy.logwarn("Unable to approach fully. Plan fraction is {}".format(retval, fraction))
+            if self.log: rospy.logwarn("Unable to approach fully. Plan fraction is {}".format(fraction))
         else: 
-            if self.log: rospy.loginfo("Approached berry fully. Plan fraction is {}".format(retval, fraction))
+            if self.log: rospy.loginfo("Approached berry fully. Plan fraction is {}".format(fraction))
 
     def move_to_retract_pose(self, x : float, y : float, z : float): 
         ''' move the arm to retract from the berry in straight x-direction
         '''
         self.group_arm.stop()
         self.group_arm.clear_pose_targets()
-        plan, fraction = self.pick_and_place_cartesian_path( x, y, z, disable_collision = True )             
+        plan, fraction = self.pick_and_place_cartesian_path( x, y, z, disable_collision = False )             
         retval = self.group_arm.execute( plan, wait = True )
         if not retval : 
-            if self.log: rospy.logwarn("Unable to retract fully. Plan fraction is {}".format(retval, fraction))
+            if self.log: rospy.logwarn("Unable to retract fully. Plan fraction is {}".format(fraction))
         else: 
-            if self.log: rospy.loginfo("Retracted back from berry fully. Plan fraction is {}".format(retval, fraction))
+            if self.log: rospy.loginfo("Retracted back from berry fully. Plan fraction is {}".format(fraction))
 
     def clear_octomap(self):
         ''' clear OctoMap service client. 
@@ -197,10 +202,14 @@ class FastPickAndPlaceAction(object):
         }
 
         # positon biases.        
-        self.offset_x  = 0.035
-        self.offset_y  = -0.025
-        self.offset_z  = -0.015
+        # self.offset_x  = 0.035
+        # self.offset_y  = -0.025
+        # self.offset_z  = -0.015
         
+        self.offset_x  = 0.025
+        self.offset_y  = 0.010
+        self.offset_z  = 0.00275
+
         self.fastpick_arm = FastPickMoveIt(config)
         self._action_name = name
         self._server = actionlib.SimpleActionServer(self._action_name, StrawberryPickAction, execute_cb=self.execute_cb, auto_start = False)
@@ -214,6 +223,7 @@ class FastPickAndPlaceAction(object):
         self._goal = StrawberryPickGoal()
         self.num_picked_success = 0
         self.num_picked_fail = 0
+        self.is_goal_cancelled_already = False
 
         self._goal = goal 
         self.success = True
@@ -249,9 +259,10 @@ class FastPickAndPlaceAction(object):
         self._server.publish_feedback(self._feedback)
 
     def is_goal_cancel(self): 
-        if self._server.is_preempt_requested():
+        if self._server.is_preempt_requested() and not self.is_goal_cancelled_already:
             rospy.loginfo("Preempting the goal for action {}".format(self._action_name))
             self._server.set_preempted()
+            self.is_goal_cancelled_already  = True
             self.success = False
             if self.is_robot_moving : 
                 self.fastpick_arm.abort_movement()
@@ -317,6 +328,7 @@ class FastPickAndPlaceAction(object):
         self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) )              
         self.fastpick_arm.clear_octomap()
 
+        is_picked = False
         if not self.is_goal_cancel(): 
             status = "Moving to pick {}".format(berry_frame)
             self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
@@ -327,7 +339,7 @@ class FastPickAndPlaceAction(object):
             if not self.is_goal_cancel(): 
                 status = "Approaching {}".format(berry_frame) 
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
-                self.fastpick_arm.move_to_approach_pose( 0.075, 0.0, 0.0 )
+                self.fastpick_arm.move_to_approach_pose( 0.0750, 0.0, 0.0 )
             
             if not self.is_goal_cancel(): 
                 status = "Closing gripper to grasp {}".format(berry_frame) 
@@ -342,7 +354,12 @@ class FastPickAndPlaceAction(object):
             if not self.is_goal_cancel(): 
                 status = "Retracting from {}".format(berry_frame) 
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
-                self.fastpick_arm.move_to_retract_pose( -0.075, 0.0, 0.0 )
+                self.fastpick_arm.move_to_retract_pose( -0.05, 0.0, 0.0 )
+                        
+            if not self.is_goal_cancel(): 
+                status = "Retracting from {}".format(berry_frame) 
+                self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
+                self.fastpick_arm.move_to_retract_pose( -0.05, 0.0, 0.0 )
             
             if not self.is_goal_cancel(): 
                 status = "Moving to pick_start pose"

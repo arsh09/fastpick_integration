@@ -23,6 +23,9 @@ from sensor_msgs.msg import Image
 from fastpick_msgs.msg import StrawberryObject, StrawberryObjects
 from fastpick_enet_model import ENetModelPredictions
 
+from franka_msgs.msg import ErrorRecoveryAction, ErrorRecoveryActionGoal
+from std_msgs.msg import Bool
+
 
 class FastPickBerryDetection: 
 
@@ -52,6 +55,11 @@ class FastPickBerryDetection:
         else: 
             rospy.logerr("The ENet model path provided does not exists. Please set the 'model_path' param correctly")
             sys.exit(0)
+
+        # franka recovery  
+        self.franka_recovery_as = rospy.Publisher("/franka_control/error_recovery/goal", ErrorRecoveryActionGoal, queue_size = 1)
+        # this publisher stop tf for berry perception 
+        self.perception_stop_topic = rospy.Publisher("/fastpick_perception/stop_perception", Bool, queue_size = 10 )
 
         # loop function 
         self.handle_loop()
@@ -171,6 +179,12 @@ class FastPickBerryDetection:
 
         return image 
  
+    def start_perception(self): 
+        msg = Bool() 
+        msg.data = False
+        self.perception_stop_topic.publish( msg ) 
+
+
     def handle_loop(self) -> None:
         ''' loop function that: 
                 - continously monitors color image 
@@ -199,6 +213,16 @@ class FastPickBerryDetection:
                 if k == 27: 
                     cv2.destroyAllWindows()
                     break
+
+                elif k == -1:
+                    continue
+                else : 
+                    if k == ord('s'): 
+                        self.start_perception()
+                    if k == ord('r'): 
+                        msg = ErrorRecoveryActionGoal()
+                        self.franka_recovery_as.publish( msg ) 
+
 
             except KeyboardInterrupt:
                 cv2.destroyAllWindows()

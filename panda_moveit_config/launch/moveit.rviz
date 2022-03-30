@@ -417,7 +417,7 @@ Visualization Manager:
       Value: false
     - Class: rviz/TF
       Enabled: true
-      Frame Timeout: 20
+      Frame Timeout: 5
       Frames:
         All Enabled: false
         berry_1:
@@ -427,12 +427,6 @@ Visualization Manager:
         berry_3:
           Value: true
         berry_4:
-          Value: true
-        berry_5:
-          Value: true
-        berry_6:
-          Value: true
-        berry_7:
           Value: true
         camera_support_link:
           Value: false
@@ -511,12 +505,6 @@ Visualization Manager:
           berry_3:
             {}
           berry_4:
-            {}
-          berry_5:
-            {}
-          berry_6:
-            {}
-          berry_7:
             {}
           panda_link1:
             panda_link2:
@@ -663,7 +651,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.9421629905700684
+      Distance: 1.7825977802276611
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -671,17 +659,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.5236645936965942
-        Y: -0.5549380779266357
-        Z: 8.344650268554688e-07
+        X: 0.7196195721626282
+        Y: 0.05616253614425659
+        Z: 5.960464477539062e-07
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2853952944278717
+      Pitch: 0.33539530634880066
       Target Frame: panda_link0
-      Yaw: 1.5617337226867676
+      Yaw: 1.936734676361084
     Saved: ~
 Window Geometry:
   Camera Color Feed:
