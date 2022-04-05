@@ -70,8 +70,8 @@ class FastPickMoveIt():
 
         # group.set_max_velocity_scaling_factor(1.0)
         # group.set_max_acceleration_scaling_factor(1.0)
-        group.set_max_velocity_scaling_factor(0.1)
-        group.set_max_acceleration_scaling_factor(0.5)
+        group.set_max_velocity_scaling_factor(0.25)
+        group.set_max_acceleration_scaling_factor(0.65)
 
     def abort_movement(self) -> None: 
         ''' abort any movement if the pick berry goal 
@@ -206,9 +206,9 @@ class FastPickAndPlaceAction(object):
         # self.offset_y  = -0.025
         # self.offset_z  = -0.015
         
-        self.offset_x  = 0.025
-        self.offset_y  = 0.010
-        self.offset_z  = 0.00275
+        self.offset_x  = -0.055
+        self.offset_y  = 0.015
+        self.offset_z  = 0.02
 
         self.fastpick_arm = FastPickMoveIt(config)
         self._action_name = name
@@ -218,6 +218,7 @@ class FastPickAndPlaceAction(object):
     
     def execute_cb(self, goal): 
         
+        self.goal_is_cancelled = False
         self._feedback = StrawberryPickFeedback()
         self._result = StrawberryPickResult() 
         self._goal = StrawberryPickGoal()
@@ -329,49 +330,49 @@ class FastPickAndPlaceAction(object):
         self.fastpick_arm.clear_octomap()
 
         is_picked = False
-        if not self.is_goal_cancel(): 
+        if not self.is_goal_cancelled_already:
             status = "Moving to pick {}".format(berry_frame)
             self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
             is_picked = self.fastpick_arm.move_to_pose_xyz(berry_pose, self.offset_x, self.offset_y, self.offset_z )
 
         if is_picked: 
             
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already: 
                 status = "Approaching {}".format(berry_frame) 
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_approach_pose( 0.0750, 0.0, 0.0 )
             
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already:
                 status = "Closing gripper to grasp {}".format(berry_frame) 
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_named_pose_gripper(pose = "close")
             
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already:
                 status = "Opening gripper to ungrasp {}".format(berry_frame) 
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_named_pose_gripper(pose = "open")
             
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already:
                 status = "Retracting from {}".format(berry_frame) 
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_retract_pose( -0.05, 0.0, 0.0 )
                         
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already:
                 status = "Retracting from {}".format(berry_frame) 
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_retract_pose( -0.05, 0.0, 0.0 )
             
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already:
                 status = "Moving to pick_start pose"
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_named_pose_arm( pose = "pick_start" )     
             
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already:
                 status = "Moving to place_start pose"
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_named_pose_arm( pose = "place_start" )
             
-            if not self.is_goal_cancel(): 
+            if not self.is_goal_cancelled_already:
                 status = "Moving to pick_start pose"
                 self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
                 self.fastpick_arm.move_to_named_pose_arm( pose = "pick_start" )     
@@ -380,7 +381,8 @@ class FastPickAndPlaceAction(object):
         else: 
             status = "Unsuccessful pick. Moving to pick_start pose"
             self.send_feedback ( status = status , picked_till_now = self.num_picked_success , pick_remains = self._goal.num_berries_to_pick - (self.num_picked_success + self.num_picked_fail) ) 
-            if not self.is_goal_cancel():self.fastpick_arm.move_to_named_pose_arm( pose = "pick_start" )     
+            if not self.is_goal_cancelled_already:
+                self.fastpick_arm.move_to_named_pose_arm( pose = "pick_start" )     
             self.num_picked_fail += 1
 
 if __name__ == '__main__':

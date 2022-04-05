@@ -25,7 +25,7 @@ from fastpick_enet_model import ENetModelPredictions
 
 from franka_msgs.msg import ErrorRecoveryAction, ErrorRecoveryActionGoal
 from std_msgs.msg import Bool
-
+from actionlib_msgs.msg import GoalID
 
 class FastPickBerryDetection: 
 
@@ -61,6 +61,9 @@ class FastPickBerryDetection:
         # this publisher stop tf for berry perception 
         self.perception_stop_topic = rospy.Publisher("/fastpick_perception/stop_perception", Bool, queue_size = 10 )
 
+        # cancel pick and place action goal 
+        self.pick_and_place_goal_cancel_pub = rospy.Publisher("/fastpick_pick_and_place/cancel", GoalID, queue_size = 1)
+
         # loop function 
         self.handle_loop()
  
@@ -95,7 +98,7 @@ class FastPickBerryDetection:
 
         # morph filtering
         thresh = cv2.erode(thresh, None, iterations=1)
-        thresh = cv2.dilate(thresh, None, iterations=7)
+        thresh = cv2.dilate(thresh, None, iterations=5)
         # thresh = cv2.erode(thresh, None, iterations=3)
 
         # contours find
@@ -223,7 +226,11 @@ class FastPickBerryDetection:
                         msg = ErrorRecoveryActionGoal()
                         self.franka_recovery_as.publish( msg ) 
 
-
+                    if k == ord('c'):
+                        msg = GoalID()
+                        self.pick_and_place_goal_cancel_pub.publish(msg)
+                        self.start_perception()
+            
             except KeyboardInterrupt:
                 cv2.destroyAllWindows()
                 break
