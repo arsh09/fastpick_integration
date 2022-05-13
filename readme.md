@@ -45,29 +45,45 @@ $ roslaunch fastpick_bringup fastpick_bringup.launch
 $ roslaunch fastpick_perception fastpick_perception_bringup.launch
 ```
 
+You can run one node to pick one berry at a time. 
+
 ```bash
-# terminal 2 // perception pick & place pipeline
+# terminal 3 // perception pick & place pipeline
 $ roslaunch fastpick_pick fastpick_pick_berry.launch how_many:=2
 
 # how_many: Number of berries to pick (should be less-or-equal to the berry_n frames where n is 1,2,3,4...)
 ```
 
+## OR 
+
+You can use the action server/client where the action-server sits silently with all the motion planning codes and waits for the request from the action-client node. 
+
+When the action client node is run, it sends a request to action-server as to how many berries to pick and those berreis are picked. If a berry is not picked, the feedback is sent back to action-client. 
+
+
+```bash
+# run the action server (possibly in terminal 3) 
+$ rosrun fastpick_pick fastpick_pick_and_place_server.py 
+```
+
+```bash
+# run the action client (in terminal 4) 
+$ roslaunch fastpick_pick fastpick_action_client.launch how_many:=<number-of-berries-to-pick>
+```
+
+If the *number-of-berries-to-pick* is let say 5. They berry_1 .. berry_5 will be picked. However, if the vision detection node does not find any of the berries (let's say berry_3), then it will be ignored completely. 
+
 
 ### Planning Pipelines 
 
 I am loading three planning pipelines from MoveIt i.e. OMPL, CHOMP and PILZ Industrial Planners. The idea is to use all three or two of them. We can change the planner at run time before each plan. PILz (LIN/PTP) is useful for straight line motion (without collision detection / obstable avoidance). CHOMP provides collision free-paths at the cost of jerky motion. OMPL finds a collision free path is there is one (slower than CHOMP but smoother). We can use CHOMP with OMPL as a preprocessor to get from home pose to pre-grasp pose and then switch the planning pipeline to use LIN from PILZ pipeline for pre-grasp to grasp pose and then post-grasp pose. Then we can switch it back to OMPL/CHOMP to go to place poses. The (robotic) world is your oyster!!! :P
+ 
 
-### ToDo
+### Berry Detection
 
-- The pick and place pipeline should be converted into an action server instead. 
-- Options to dynamically add and remove octomap in planning using the said action server message 
-- Perform path planning in camera optical frame to avoid confusion or post rotation multiplication for pre-align, pre-grasp, grasp and post-grasp poses. 
-- Add scene analyzer action client. 
-- Add comments and reformat the code 
-- Add a few tests
+We developed two berry detection system based on ENeT model and MaskRCNN. The Mask R-CNN based models were also segmenting the environment into 4 segments (berry, background, .. ). This repository use the ENeT model as it was more faster and accurate. For MaskRCNN, you will need to setup *detectron2* library. 
 
-
-### Modules 
+### Modules (THIS WAS NOT USED IN THE DEMO)
 
 - I used rosbridge server for MaskPredictor as I do not have NVidia GPU installed. However, rosbridge server might need a lot of python3 libraries to be manually installed. These includes tornado, bson, service_identity. Keep running ```roslaunch rosbridge_server rosbrigde_websocket.launch``` and it will keep giving you ```NO module found erro``` which you can install using ```pip3 install module-name```
 

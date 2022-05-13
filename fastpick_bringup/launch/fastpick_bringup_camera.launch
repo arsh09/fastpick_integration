@@ -4,7 +4,7 @@
 
   <group if="$(arg load_camera)" >
     <!-- robot grasp frame to camera color optical tf -->
-    <include file="$(find fastpick_description)/launch/franka_ee_to_cam_optical_pose.launch"/>
+    <!-- <include file="$(find fastpick_description)/launch/franka_ee_to_cam_optical_pose.launch"/> -->
 
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
       <arg name="serial_no"         value=""/>
