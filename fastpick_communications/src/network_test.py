@@ -1,4 +1,9 @@
+"""
+A quick way to log your network results (latency and throughput). 
 
+Muhammad Arshad 
+26-Sept-2022
+"""
 
 import subprocess as sp 
 from pping import ping 
@@ -77,8 +82,6 @@ if __name__ == "__main__":
 
     
     csv_filename = "network_test_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds )
-
-
 
 
     with open(csv_filename, "w") as f: 
