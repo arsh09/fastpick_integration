@@ -1,2 +1,0 @@
-time,interface,rxpck/s,txpck/sec,rxkB/s,txkB/s,rxcmp/s,txcmp/s,rxmcst/s,%ifutil,latency
-23:20:29,wlx70f11c21d4b4,7.00,1.00,1.65,0.07,0.00,0.00,0.00,0.025
