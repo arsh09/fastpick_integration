@@ -1,0 +1,18 @@
+<launch>
+  
+  <!-- launch this on the robot -->
+
+  <arg name="use_tls" default="false" />
+
+  <!-- the IP of the coordination_server rosbridge server -->
+  <arg name="mqtt_bridge_ip" default="$(optenv MQTT_BRIDGE_IP localhost)" />
+
+  <!-- the port of the coordination_server mqtt_bridge server -->
+  <arg name="mqtt_bridge_port" default="$(optenv MQTT_BRIDGE_PORT 8883)" />
+
+  <node name="mqtt_bridge_client_side" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen">
+    <rosparam command="load" file="$(find fastpick_communications)/mqtt/config/mqtt_to_ros_client.yaml" />
+    <rosparam if="$(arg use_tls)" command="load" ns="mqtt" file="$(find mqtt_bridge)/config/tls_params.yaml" />
+  </node>
+
+</launch>
