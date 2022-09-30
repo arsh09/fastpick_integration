@@ -1,0 +1,36 @@
+---
+session: rasberry_fruitcounts
+init_cmd : | 
+  # load workspace
+  # source $HOME/robot_highway/data_ws/devel/setup.bash
+  function source_filepath () {
+    echo -e "  \033[1;45mSourcing: $1/\033[0;1;105m$2\033[0m" ;
+    source $1/$2
+  }
+  # load ws details
+  source_filepath $HOME .bashrc
+  source_filepath $HOME/robot_highway/data_ws/devel setup.bash
+  
+
+windows: 
+  - name: roscore
+    panes: 
+      - roscore
+    check: 'rostopic list | grep rosout'
+
+  # play robag
+  - name: rosbag
+    panes: 
+      - rosparam set use_sim_time true
+      - rosrun rosbag play /home/arshad/robot_highway/data_ws/src/rasberry_fruitcounting/berry_tracker/bags/stream_1_camera_polytunnel.bag
+        --clock --quiet --loop --rate 1.0
+
+  # convert uncompressed to compressed
+  - name: image_compressed_converters
+    panes: 
+      - rosrun image_transport republish 
+        __name:=image_rgb_compressed_converter_node
+        raw in:=/camera2/color/image_raw
+        compressed out/compressed:=/camera/image_raw/compressed
+
+    check: "rostopic list | grep compressed"

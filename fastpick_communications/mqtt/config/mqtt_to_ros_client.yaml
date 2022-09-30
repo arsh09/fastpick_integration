@@ -16,14 +16,15 @@ deserializer: msgpack:loads
 bridge:
   - factory: mqtt_bridge.bridge:RosToMqttBridge
     msg_type: sensor_msgs.msg:CompressedImage
-    topic_from: /usb_cam/image_raw/compressed
-    topic_to: /usb_cam/image_raw/compressed
+    topic_from: /camera/image_raw/compressed
+    topic_to: /camera/image_raw/compressed
     latched: false
     qos: 2
 
-  # - factory: mqtt_bridge.bridge:MqttToRosBridge
-  #   msg_type: fastpick_msgs.msg:StrawberryObjects
-  #   topic_from: /detected_strawberries
-  #   topic_to: /through_mqtt_bridge/detected_strawberries
-  #   latched: false 
-  #   qos: 2
+  - factory: mqtt_bridge.bridge:MqttToRosBridge
+    msg_type: sensor_msgs.msg:CompressedImage
+    topic_to: /detected/image_raw/compressed
+    topic_from: /detected/image_raw/compressed
+    latched: false
+    qos: 2
+

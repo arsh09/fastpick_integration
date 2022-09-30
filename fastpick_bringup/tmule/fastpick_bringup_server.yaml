@@ -1,0 +1,69 @@
+---
+session: fastpick_integration
+init_cmd : | 
+  # load workspace
+  # source $HOME/fastpick_ws/devel/setup.bash
+  function source_filepath () {
+    echo -e "  \033[1;45mSourcing: $1/\033[0;1;105m$2\033[0m" ;
+    source $1/$2
+  }
+  # load ws details
+  source_filepath $HOME .bashrc
+  source_filepath $HOME/fastpick_ws/devel setup.bash
+  
+
+windows: 
+
+  # convert compressed to uncompressed
+  - name: image_compressed_converters
+    panes: 
+      - conda deactivate && conda deactivate && 
+        rosrun image_transport republish 
+        __name:=image_rgb_compressed_converter_node
+        compressed in/compressed:=/camera/color/image_raw/compressed
+        raw out:=/fastpick/color/image_raw
+
+    check: "rostopic list | grep fastpick/color/image_raw"
+
+
+  - name: fruit_detector_server
+    panes:
+      - conda activate grasp &&
+        rosrun rasberry_perception detection_server.py 
+        --backend fruitcast 
+        --weights /home/arshad/robot_highway/data_ws/src/rasberry_fruitcounting/berry_tracker/models/best.pt
+    check: "rosservice list | grep /get_detections_service"
+
+  # take (rgb, depth) -> detect fruits (client)
+  - name: fruit_detector_client
+    panes: 
+        - conda activate grasp && 
+          rosrun rasberry_perception detection_client.py 
+          __name:=fruit_detector_client  
+          _image_ns:=/side/color
+          _depth_ns:=/camera1/aligned_depth_to_color 
+          _score:=0.75 
+          _show_vis:=true 
+          _publish_source:=true
+          /side/color/camera_info:=/camera1/aligned_depth_to_color/camera_info
+
+  # take detectron results and count strawberries
+  - name: strawberry_counter
+    panes: 
+      - conda activate grasp && 
+        rosrun berry_tracker rasberry_strawberry_visualization.py
+        __name:=fruit_counter_node
+        _detection_results:=/fruit_detector_client/results
+
+  # take detectron results and count strawberries
+  - name: strawberry_tracker
+    panes: 
+      - conda activate grasp && 
+        rosrun berry_tracker berry_tracker_sort.py
+        __name:=fruit_tracker_2d_node
+        _detection_results:=/fruit_detector_client/results
+        _check_topo_node:=True
+
+  - name: rviz
+    panes: 
+      - rosrun rviz rviz -d `rospack find berry_tracker`/rviz/data_visualization_stream.rviz

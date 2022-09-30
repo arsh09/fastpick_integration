@@ -1,0 +1,20 @@
+<launch>
+
+    <arg name="model_filepath" default="$(find fastpick_perception)/models/scene_analyzer_model/fp_ss_model.pth"/>
+    <arg name="meta_filepath"  default="$(find fastpick_perception)/models/scene_analyzer_model/metadata.pkl"/>
+    <arg name="cfg_file"        default="COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml"/>
+    
+    <arg name="backend_name" default="scene_analyzer_server"/>
+
+    <node name="detection_server_node" pkg="rasberry_perception" type="detection_server.py" 
+        args="
+            --backend           $(arg backend_name)
+            --model_path        $(arg model_filepath)
+            --metadata_path     $(arg meta_filepath)
+            --cfg_path          $(arg cfg_file)
+            "
+            output="screen" required="true"
+        >
+    </node>
+
+</launch>
