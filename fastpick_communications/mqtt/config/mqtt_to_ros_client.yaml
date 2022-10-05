@@ -21,10 +21,10 @@ bridge:
     latched: false
     qos: 2
 
-  # - factory: mqtt_bridge.bridge:MqttToRosBridge
-  #   msg_type: sensor_msgs.msg:CompressedImage
-  #   topic_to: /detected/image_raw/compressed
-  #   topic_from: /detected/image_raw/compressed
-  #   latched: false
-  #   qos: 2
+  - factory: mqtt_bridge.bridge:MqttToRosBridge
+    msg_type: sensor_msgs.msg:CompressedImage
+    topic_to: /detected/compressed
+    topic_from: /detected/compressed
+    latched: false
+    qos: 2
 

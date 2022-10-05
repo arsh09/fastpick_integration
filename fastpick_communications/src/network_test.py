@@ -72,9 +72,9 @@ if __name__ == "__main__":
     network_data.append( headers.split(",") )
 
     # start a rosbag 
-    cmd = "rosbag record /camera/image_raw/compressed -O /media/arshad/Samsung_T5/Lincoln/Projects/FastPick/{}-{}-{}".format(interface_name, ip_addr, counts_in_seconds)
+    cmd = "rosbag record /camera/image_raw/compressed -O /home/arshad/Desktop/{}-{}-{}".format(interface_name, ip_addr, counts_in_seconds)
     cmd = shlex.split(cmd)
-    cmd_rosbag = sp.Popen( cmd )
+    # cmd_rosbag = sp.Popen( cmd )
 
     for count in range( int( counts_in_seconds )  ):
         try:
@@ -87,15 +87,15 @@ if __name__ == "__main__":
             break
 
 
-    csv_filename = "/media/arshad/Samsung_T5/Lincoln/Projects/FastPick/network_test_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds )
+    csv_filename = "/home/arshad/Desktop/network_test_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds )
     with open(csv_filename, "w") as f: 
         wr = csv.writer(f)
         wr.writerows(network_data)
 
     print("Network test is saved in {}".format(csv_filename))
 
-    for proc in psutil.process_iter():
-        if "record" in proc.name() and set(cmd[2:]).issubset(proc.cmdline()):
-            proc.send_signal(sp.signal.SIGINT)
+    # for proc in psutil.process_iter():
+    #     if "record" in proc.name() and set(cmd[2:]).issubset(proc.cmdline()):
+    #         proc.send_signal(sp.signal.SIGINT)
 
-    cmd_rosbag.send_signal(sp.signal.SIGINT)
+    # cmd_rosbag.send_signal(sp.signal.SIGINT)

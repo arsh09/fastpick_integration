@@ -10,7 +10,7 @@ init_cmd : |
   # load ws details
   source_filepath $HOME .bashrc
   source_filepath $HOME/fastpick_ws/devel setup.bash
-  export ROS_MASTER_URI=http://192.168.0.34:11311
+  export ROS_MASTER_URI=http://192.168.0.32:11311
   export ROS_HOSTNAME=192.168.0.16
   
 
@@ -26,6 +26,12 @@ windows:
       - rosparam set use_sim_time true
       - rosrun rosbag play /home/arshad/robot_highway/data_ws/src/rasberry_fruitcounting/berry_tracker/bags/stream_1_camera_polytunnel.bag
         --clock --quiet --loop --rate 1.0
+
+  - name: debug
+    panes: 
+      - rostopic list
+      - rosservice list
+      - rosparam list 
 
   # convert uncompressed to compressed
   - name: image_compressed_converters
