@@ -4,7 +4,7 @@ mqtt:
     client_id: client111
     clean_session: False
   connection:
-    host: 192.168.1.100 #10.101.12.86 #192.168.1.86 #
+    host: 192.168.0.32
     port: 8883
     keepalive: 5
   private_path: device/001
@@ -21,10 +21,10 @@ bridge:
     latched: false
     qos: 2
 
-  # - factory: mqtt_bridge.bridge:MqttToRosBridge
-  #   msg_type: sensor_msgs.msg:CompressedImage
-  #   topic_to: /detected/image_raw/compressed
-  #   topic_from: /detected/image_raw/compressed
-  #   latched: false
-  #   qos: 2
+  - factory: mqtt_bridge.bridge:MqttToRosBridge
+    msg_type: sensor_msgs.msg:CompressedImage
+    topic_to: /detected/compressed
+    topic_from: /detected/compressed
+    latched: false
+    qos: 2
 
