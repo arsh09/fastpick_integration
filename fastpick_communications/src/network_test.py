@@ -4,13 +4,15 @@ A quick way to log your network results (latency and throughput).
 Muhammad Arshad 
 26-Sept-2022
 """
-
+import  shlex, psutil
 import subprocess as sp 
 from pping import ping 
 import re 
 import sys
 import time
 import csv
+import os
+import signal
 
 def network_throughput( interface_name , count, ping_ms_time = 0.0 ) : 
 
@@ -69,8 +71,12 @@ if __name__ == "__main__":
     network_data = []
     network_data.append( headers.split(",") )
 
+    # start a rosbag 
+    cmd = "rosbag record /camera/image_raw/compressed -O /media/arshad/Samsung_T5/Lincoln/Projects/FastPick/{}-{}-{}".format(interface_name, ip_addr, counts_in_seconds)
+    cmd = shlex.split(cmd)
+    cmd_rosbag = sp.Popen( cmd )
+
     for count in range( int( counts_in_seconds )  ):
-        
         try:
             ping_ms_time = netowrk_latency( ip_addr )
             value = network_throughput( interface_name , 1, ping_ms_time)
@@ -80,12 +86,16 @@ if __name__ == "__main__":
         except KeyboardInterrupt: 
             break
 
-    
-    csv_filename = "network_test_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds )
 
-
+    csv_filename = "/media/arshad/Samsung_T5/Lincoln/Projects/FastPick/network_test_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds )
     with open(csv_filename, "w") as f: 
         wr = csv.writer(f)
         wr.writerows(network_data)
 
     print("Network test is saved in {}".format(csv_filename))
+
+    for proc in psutil.process_iter():
+        if "record" in proc.name() and set(cmd[2:]).issubset(proc.cmdline()):
+            proc.send_signal(sp.signal.SIGINT)
+
+    cmd_rosbag.send_signal(sp.signal.SIGINT)

@@ -1,10 +1,10 @@
 mqtt:
   client:
     protocol: 4      # MQTTv311
-    client_id: client1
+    client_id: client111
     clean_session: False
   connection:
-    host: 192.168.1.100 #10.101.12.86
+    host: 192.168.1.100 #10.101.12.86 #192.168.1.86 #
     port: 8883
     keepalive: 5
   private_path: device/001
