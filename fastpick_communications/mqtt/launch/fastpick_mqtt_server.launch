@@ -11,7 +11,7 @@
   <arg name="mqtt_bridge_port" default="$(optenv MQTT_BRIDGE_PORT 8883)" />
 
   <!-- start mosquito server  -->
-  <node pkg="mqtt_bridge" name="mosquitto_server" type="mosquitto_server.sh" output="screen" args="$(arg mqtt_bridge_port)"/>
+  <!-- <node pkg="mqtt_bridge" name="mosquitto_server" type="mosquitto_server.sh" output="screen" args="$(arg mqtt_bridge_port)"/> -->
 
   <node name="mqtt_bridge_server_side" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen">
     <rosparam command="load" file="$(find fastpick_communications)/mqtt/config/mqtt_to_ros_server.yaml" />
