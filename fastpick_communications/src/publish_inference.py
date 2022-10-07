@@ -34,6 +34,7 @@ class PublishInference:
 
         img_count = 0
         img_files = self.read_directory()
+        rate = rospy.Rate(50)
         while not rospy.is_shutdown():
             try: 
                 img = cv2.imread( img_files[img_count] )
@@ -44,7 +45,7 @@ class PublishInference:
                 ros_img = ros_numpy.msgify( Image , img , encoding = 'rgb8')
                 self.img_topic.publish( ros_img )
                 rospy.loginfo("showing {} / {}".format( img_count, len(img_files )))
-                rospy.Rate(30).sleep()
+                rate.sleep()
 
                 # cv2.imshow("img", img)
                 # k = cv2.waitKey(30)
