@@ -10,8 +10,6 @@ init_cmd : |
   # load ws details
   source_filepath $HOME .bashrc
   source_filepath $HOME/fastpick_ws/devel setup.bash
-  export ROS_MASTER_URI=http://192.168.0.16:11311
-  export ROS_HOSTNAME=192.168.0.16
 
 
 windows: 
