@@ -1,0 +1,17 @@
+<launch>
+
+    <node name="inference_publisher_node" 
+        type="publish_inference.py"
+        pkg="fastpick_communications"
+        output="screen"
+    />
+
+    <node name="inference_compresser_node"
+        type="republish"
+        pkg="image_transport"
+        output="screen"
+        args=" raw in:=/detected/image_raw compressed out/compressed:=/detected/compressed"
+    />
+
+</launch>
+
