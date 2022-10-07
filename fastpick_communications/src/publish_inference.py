@@ -28,7 +28,7 @@ class PublishInference:
         else: 
             rospy.logerr("{} is not correct path".format(image_folder))
 
-        return image_files
+        return image_files[:100]
 
     def handle_loop(self): 
 
@@ -36,21 +36,21 @@ class PublishInference:
         img_files = self.read_directory()
         while not rospy.is_shutdown():
             try: 
-                if img_count >= len( img_files): 
+                img = cv2.imread( img_files[img_count] )
+                img_count += 1
+                if img_count >= len( img_files ) - 1 : 
                     img_count = 0
-                else: 
-                    img = cv2.imread( img_files[img_count] )
-                    img_count += 1
-                    
-                    ros_img = ros_numpy.msgify( Image , img , encoding = 'rgb8')
-                    self.img_topic.publish( ros_img )
+                
+                ros_img = ros_numpy.msgify( Image , img , encoding = 'rgb8')
+                self.img_topic.publish( ros_img )
+                rospy.loginfo("showing {} / {}".format( img_count, len(img_files )))
+                rospy.Rate(30).sleep()
 
-                    rospy.Rate(30).sleep()
-                    # cv2.imshow("img", img)
-                    # k = cv2.waitKey(30)
-                    # if k == 27:
-                    #     cv2.destroyAllWindows() 
-                    #     break
+                # cv2.imshow("img", img)
+                # k = cv2.waitKey(30)
+                # if k == 27:
+                #     cv2.destroyAllWindows() 
+                #     break
 
             except KeyboardInterrupt: 
                 cv2.destroyAllWindows()
