@@ -60,11 +60,11 @@ def netowrk_latency( ip ) :
 
 if __name__ == "__main__":
 
-    if len( sys.argv ) != 4: 
-        print ("\nUsage: \npython network_test.py <interface-name> <other-computer-ip-addr> <counts-in-seconds>\n\n")
+    if len( sys.argv ) != 5: 
+        print ("\nUsage: \npython network_test.py <interface-name> <other-computer-ip-addr> <counts-in-seconds> <file-append>\n\n")
         sys.exit()
 
-    interface_name, ip_addr, counts_in_seconds = sys.argv[1], sys.argv[2], sys.argv[3]
+    interface_name, ip_addr, counts_in_seconds , file_append_name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 
     headers = "time,interface,rxpck/s,txpck/sec,rxkB/s,txkB/s,rxcmp/s,txcmp/s,rxmcst/s,%ifutil,latency"
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
             break
 
 
-    csv_filename = "./network_test_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds )
+    csv_filename = "./network_test_{}_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds, file_append_name )
     with open(csv_filename, "w") as f: 
         wr = csv.writer(f)
         wr.writerows(network_data)
