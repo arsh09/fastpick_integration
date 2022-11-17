@@ -5,3 +5,6 @@
 	path = third_party/franka_ros
 	url = https://github.com/frankaemika/franka_ros.git
 	branch = noetic-devel
+[submodule "third_party/camera_umd"]
+	path = third_party/camera_umd
+	url = https://github.com/ros-drivers/camera_umd.git
