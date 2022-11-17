@@ -4,8 +4,10 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /MotionPlanning1
+        - /MotionPlanning1/Scene Robot1
         - /MotionPlanning1/Planning Request1
+        - /Transformations1
+        - /Transformations1/Frames1
         - /Transformations1/Tree1
       Splitter Ratio: 0.6028708219528198
     Tree Height: 366
@@ -102,28 +104,10 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          camera_support_link:
+          calibrated_frame:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          fastpick_grasp_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_hand:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_hand_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_leftfinger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -165,11 +149,6 @@ Visualization Manager:
             Show Trail: false
             Value: true
           panda_link8:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_rightfinger:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -219,6 +198,53 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          uph_base_back_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_blade_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_camera_1_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          uph_camera_2_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          uph_grasp_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          uph_left_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_left_separation_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_right_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_right_separation_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_sensors_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         Loop Animation: false
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
@@ -265,28 +291,10 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          camera_support_link:
+          calibrated_frame:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          fastpick_grasp_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_hand:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_hand_tcp:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_leftfinger:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           panda_link0:
             Alpha: 1
             Show Axes: false
@@ -328,11 +336,6 @@ Visualization Manager:
             Show Trail: false
             Value: true
           panda_link8:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          panda_rightfinger:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -382,6 +385,53 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          uph_base_back_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_blade_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_camera_1_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          uph_camera_2_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          uph_grasp_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          uph_left_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_left_separation_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_right_finger_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_right_separation_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          uph_sensors_base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true
@@ -420,21 +470,13 @@ Visualization Manager:
       Frame Timeout: 5
       Frames:
         All Enabled: false
-        camera_support_link:
+        calibrated_frame:
           Value: false
-        fastpick_grasp_link:
-          Value: true
         panda_EE:
           Value: false
         panda_K:
           Value: false
         panda_NE:
-          Value: false
-        panda_hand:
-          Value: false
-        panda_hand_tcp:
-          Value: false
-        panda_leftfinger:
           Value: false
         panda_link0:
           Value: false
@@ -453,8 +495,6 @@ Visualization Manager:
         panda_link7:
           Value: false
         panda_link8:
-          Value: false
-        panda_rightfinger:
           Value: false
         top_camera_aligned_depth_to_color_frame:
           Value: false
@@ -480,6 +520,26 @@ Visualization Manager:
           Value: false
         top_camera_right_ir_optical_frame:
           Value: false
+        uph_base_back_link:
+          Value: false
+        uph_blade_link:
+          Value: false
+        uph_camera_1_base_link:
+          Value: false
+        uph_camera_2_base_link:
+          Value: false
+        uph_grasp_link:
+          Value: false
+        uph_left_finger_link:
+          Value: false
+        uph_left_separation_link:
+          Value: false
+        uph_right_finger_link:
+          Value: false
+        uph_right_separation_link:
+          Value: false
+        uph_sensors_base_link:
+          Value: false
         world:
           Value: false
       Marker Alpha: 1
@@ -498,9 +558,13 @@ Visualization Manager:
                     panda_link6:
                       panda_link7:
                         panda_link8:
-                          camera_support_link:
-                            fastpick_grasp_link:
-                              {}
+                          calibrated_frame:
+                            {}
+                          panda_NE:
+                            panda_EE:
+                              panda_K:
+                                {}
+                          uph_base_back_link:
                             top_camera_link:
                               top_camera_aligned_depth_to_color_frame:
                                 top_camera_color_optical_frame:
@@ -519,17 +583,23 @@ Visualization Manager:
                                 top_camera_right_ir_frame:
                                   top_camera_right_ir_optical_frame:
                                     {}
-                          panda_NE:
-                            panda_EE:
-                              panda_K:
+                            uph_blade_link:
+                              {}
+                            uph_grasp_link:
+                              {}
+                            uph_left_finger_link:
+                              {}
+                            uph_left_separation_link:
+                              {}
+                            uph_right_finger_link:
+                              {}
+                            uph_right_separation_link:
+                              {}
+                            uph_sensors_base_link:
+                              uph_camera_1_base_link:
                                 {}
-                          panda_hand:
-                            panda_hand_tcp:
-                              {}
-                            panda_leftfinger:
-                              {}
-                            panda_rightfinger:
-                              {}
+                              uph_camera_2_base_link:
+                                {}
           world:
             {}
       Update Interval: 0
@@ -615,9 +685,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3503950238227844
+      Pitch: 0.6053948998451233
       Target Frame: panda_link0
-      Yaw: 4.934910297393799
+      Yaw: 5.6649065017700195
     Saved: ~
 Window Geometry:
   Camera Color Feed:
