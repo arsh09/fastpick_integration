@@ -1,3 +1,7 @@
 [submodule "third_party/rasberry_perception"]
 	path = third_party/rasberry_perception
 	url = https://github.com/arsh09/rasberry_perception.git
+[submodule "third_party/franka_ros"]
+	path = third_party/franka_ros
+	url = https://github.com/frankaemika/franka_ros.git
+	branch = noetic-devel

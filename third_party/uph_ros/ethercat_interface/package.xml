@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ethercat_interface</name>
+  <version>0.1.0</version>
+  <description>The ethercat_interface package</description>
+
+  <maintainer email="andualem.maereg@gmail.com">Andualem Maereg</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>ethercat_soem</depend>
+  <depend>hardware_interface</depend>
+  <depend>controller_manager</depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+
+</package>

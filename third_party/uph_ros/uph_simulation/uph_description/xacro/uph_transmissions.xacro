@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="uph_gripper"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- transmission -->
+  <transmission name="uph_left_separation_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="uph_left_separation_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="uph_left_separation_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="uph_right_separation_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="uph_right_separation_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="uph_right_separation_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="uph_left_finger_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="uph_left_finger_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="uph_left_finger_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="uph_right_finger_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="uph_right_finger_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="uph_right_finger_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="uph_blade_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="uph_blade_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="uph_blade_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+</robot>

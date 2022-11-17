@@ -1,0 +1,41 @@
+<launch>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+  </include>
+
+  <param name="robot_description" command="$(find xacro)xacro '$(find uph_description)/xacro/uph_gripper.xacro' --inorder "/>
+
+  <node 
+    name="urdf_spawner" 
+    pkg="gazebo_ros" 
+    type="spawn_model" 
+    args="-urdf -param robot_description -model uph-gripper -x 0 -y 0 -z 0.2 -P 0 -R 0 -Y 0" 
+    respawn="false" 
+    output="screen" />
+
+  <rosparam file="$(find uph_control)/config/uph_position_controller.yaml" command="load" />
+
+  <node  name="controller_spawner"  pkg="controller_manager"  type="spawner"
+    args=" 
+      uph_gripper_state_controller
+      uph_gripper_position_controller 
+      " 
+    respawn="false" 
+    output="screen">
+  </node>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen">
+  </node>
+  
+  <node name="uph_rqt_joint_trajectory_controller" pkg="rqt_joint_trajectory_controller" type="rqt_joint_trajectory_controller" respawn="false" output="screen">
+  </node>
+
+
+  <node name="uph_rviz_node" pkg="rviz" type="rviz" respawn="false" output="screen" args=" -d '$(find uph_control)/rviz/uph_rviz.rviz'">
+  </node>
+  
+
+
+</launch>

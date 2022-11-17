@@ -1,0 +1,1 @@
+controller_joint_names: ['', 'uph_left_separation_joint', 'uph_right_separation_joint', 'uph_left_finger_joint', 'uph_right_finger_joint', 'uph_blade_joint', ]

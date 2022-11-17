@@ -1,0 +1,18 @@
+<launch>
+
+    <include file="$(find uph_camera)/launch/uph_camera.launch">
+      <arg name="device_name"         value="/dev/video5"/>
+      <arg name="camera_name"         value="camera_1"/>
+      <arg name="camera_info_url"         value="file://$(find uph_camera)/calib/left_bottom_camera.yaml"/>
+    </include>
+    <include file="$(find uph_camera)/launch/uph_camera.launch">
+      <arg name="device_name"         value="/dev/video0"/>
+      <arg name="camera_name"         value="camera_2"/>
+      <arg name="camera_info_url"         value="file://$(find uph_camera)/calib/right_bottom_camera.yaml"/>
+    </include>
+  
+    <node name="multiple_uph_camera_node" pkg="uph_camera" type="uph_multiple_camera_subs.py" output="screen"/>
+    <node pkg="tf" name="camera_1_frame_pub" type="static_transform_publisher" args="0 0 0 -0.500, 0.500, -0.500, 0.500 /uph_camera_1_base_link /uph_camera_1_optical_link 100"/>  
+    <node pkg="tf" name="camera_2_frame_pub" type="static_transform_publisher" args="0 0 0 -0.500, 0.500, -0.500, 0.500 /uph_camera_2_base_link /uph_camera_2_optical_link 100"/>  
+
+</launch>

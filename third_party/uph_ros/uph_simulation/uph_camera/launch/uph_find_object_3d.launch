@@ -1,0 +1,30 @@
+<launch>
+
+    <arg name="rgb_topic" default="/color/image_raw"/>
+    <arg name="depth_topic" default="/aligned_depth_to_color/image_raw"/>
+    <arg name="camera_info_topic" default="/color/camera_info"/>
+
+	<!-- Example finding 3D poses of the objects detected -->
+	<!-- $roslaunch openni_launch openni.launch depth_registration:=true -->
+	
+	<node name="find_object_3d" pkg="find_object_2d" type="find_object_2d" output="screen">
+		<param name="gui" value="true" type="bool"/>
+		<param name="settings_path" value="~/.ros/find_object_2d.ini" type="str"/>
+		<param name="subscribe_depth" value="true" type="bool"/>
+		<param name="objects_path" value="" type="str"/>
+		<param name="object_prefix" value="object" type="str"/>
+		
+		<remap from="rgb/image_rect_color" to="$(arg rgb_topic)"/>
+		<remap from="depth_registered/image_raw" to="$(arg depth_topic)"/>
+		<remap from="depth_registered/camera_info" to="$(arg camera_info_topic)"/>
+	</node>
+	
+	<!-- fake some tf frames for the example /map -> /odom -> /base_link -> /camera_link -->
+	<!-- <node pkg="tf" type="static_transform_publisher" name="base_to_camera_tf" 
+		args="0.1 0.0 0.3 0.0 0.0 0.0 /base_link /camera_link 100" />
+	<node pkg="tf" type="static_transform_publisher" name="odom_to_base_tf" 
+		args="1.0 0.0 0.1 1.5707 0.0 0.0 /odom /base_link 100" />
+	<node pkg="tf" type="static_transform_publisher" name="map_to_odom_tf" 
+		args="0.0 0.5 0.0 0.7853 0.0 0.0 /map /odom 100" /> -->
+
+</launch>

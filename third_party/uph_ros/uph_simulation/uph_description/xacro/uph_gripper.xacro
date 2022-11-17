@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="uph_gripper"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- includes  -->
+  
+  <!-- gazebo ros control -->
+  <xacro:include filename="$(find uph_description)/xacro/uph_transmissions.xacro"/>
+  <!-- mimic joint and gazebo ros control -->
+  <xacro:include filename="$(find uph_description)/xacro/uph_plugins.xacro"/>
+  <!-- camera 1 and 2 -->
+  <xacro:include filename="$(find uph_description)/xacro/uph_sensors.xacro"/>
+
+  <!-- links -->
+
+  <!-- Uncomment this if you are using without franka arm -->
+  <!-- <link name='world'/> -->
+
+  <link  name="uph_base_back_link">
+    <inertial>
+      <origin
+        xyz="0.0798588125308413 0.00550929621495181 -0.0497649666506007"
+        rpy="0 0 0" />
+      <mass
+        value="0.778900660001327" />
+      <inertia
+        ixx="0.000403845175868031"
+        ixy="-5.41066936486788E-07"
+        ixz="3.04204215558601E-05"
+        iyy="0.000332088849465946"
+        iyz="1.87666002831094E-06"
+        izz="0.000410430808149495" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_base_back_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_base_back_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="uph_left_separation_link">
+    <inertial>
+      <origin
+        xyz="0.0189748620714151 0.00647890565820863 -0.003591534919053"
+        rpy="0 0 0" />
+      <mass
+        value="0.0227430592222356" />
+      <inertia
+        ixx="6.85040097168265E-06"
+        ixy="-3.71538942122859E-06"
+        ixz="1.30839441412275E-06"
+        iyy="1.36946246179293E-05"
+        iyz="5.7099955561877E-07"
+        izz="2.00323968660386E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_left_separation_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_left_separation_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="uph_right_separation_link">
+    <inertial>
+      <origin
+        xyz="0.0189748620714152 -0.00647890565820863 0.00158104711142435"
+        rpy="0 0 0" />
+      <mass
+        value="0.0227430592222356" />
+      <inertia
+        ixx="6.85040097168266E-06"
+        ixy="3.71538942122859E-06"
+        ixz="-1.30839441412275E-06"
+        iyy="1.36946246179293E-05"
+        iyz="5.70999555618772E-07"
+        izz="2.00323968660386E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_right_separation_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_right_separation_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <link name="uph_left_finger_link">
+    <inertial>
+      <origin
+        xyz="0.0219138569211688 -0.000943474527199895 0.0076456782959554"
+        rpy="0 0 0" />
+      <mass
+        value="0.0104094547990098" />
+      <inertia
+        ixx="8.23291436332855E-07"
+        ixy="7.62649230927992E-08"
+        ixz="-4.42498354223566E-08"
+        iyy="9.23265942276146E-07"
+        iyz="3.03940287635659E-09"
+        izz="1.08840544543492E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_left_finger_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_left_finger_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="uph_right_finger_link">
+    <inertial>
+      <origin
+        xyz="0.022360101124425 -0.000103473956284267 0.00679676239813345"
+        rpy="0 0 0" />
+      <mass
+        value="0.00926858696420837" />
+      <inertia
+        ixx="7.38777496687141E-07"
+        ixy="-3.36491534820547E-08"
+        ixz="-6.27995786836119E-08"
+        iyy="7.50205097432286E-07"
+        iyz="1.38594569877515E-08"
+        izz="1.05698583214232E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_right_finger_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_right_finger_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="uph_blade_link">
+    <inertial>
+      <origin
+        xyz="0.0625011259408276 -0.0133004774083706 5.91876892573687E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0168136838203055" />
+      <inertia
+        ixx="4.28167848644978E-07"
+        ixy="1.78575548220174E-06"
+        ixz="2.60670357542222E-08"
+        iyy="1.55944763927519E-05"
+        iyz="-2.73719918168968E-10"
+        izz="1.60050155265531E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_blade_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_blade_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="uph_sensors_base_link">
+    <inertial>
+      <origin
+        xyz="-0.00799636373392265 0.00173262466975193 1.2643262404011E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0232761299307565" />
+      <inertia
+        ixx="1.67213451755159E-06"
+        ixy="1.78861004859408E-07"
+        ixz="2.31607748160791E-10"
+        iyy="5.41933312029473E-07"
+        iyz="1.05198535345335E-10"
+        izz="1.98393953330259E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_sensors_base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://uph_description/meshes/uph_sensors_base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name='uph_camera_1_base_link'>
+  </link>
+
+  <link name='uph_camera_2_base_link'>
+  </link>
+
+
+  <link name='uph_grasp_link'>
+  </link>
+
+  <link name='calibrated_frame'>
+  </link>
+
+  <joint name='camera_joint' type='fixed'>
+    <origin
+      xyz="0.031507660409960364 -0.062180963327780135 0.11382905232016437"
+      rpy="0 0 0" />
+    <parent
+      link="panda_link8" />
+    <child
+      link="calibrated_frame" />
+  </joint>
+
+
+  <!-- joints -->
+
+  <!-- Uncomment this if you are using without franka arm -->
+  <!-- <joint name="uph_world_to_base_joint" type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="world" />
+    <child
+      link="uph_base_back_link" />
+  </joint> -->
+
+  <joint name="uph_left_separation_joint" type="prismatic">
+    <origin
+      xyz="0.13837 -0.014819 -0.0336"
+      rpy="0 0 0" />
+    <parent
+      link="uph_base_back_link" />
+    <child
+      link="uph_left_separation_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-0.03"
+      upper="0"
+      effort="1"
+      velocity="0.03" />
+  </joint>
+
+  <joint name="uph_right_separation_joint" type="prismatic">
+    <origin
+      xyz="0.13837 0.014775 -0.0504"
+      rpy="0 0 0" />
+    <parent
+      link="uph_base_back_link" />
+    <child
+      link="uph_right_separation_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="0"
+      upper="0.03"
+      effort="1"
+      velocity="0.03" />
+  </joint>
+
+  <joint name="uph_left_finger_joint" type="prismatic">
+    <origin
+      xyz="0.1616 0.013156 -0.068641"
+      rpy="0 0 0" />
+    <parent
+      link="uph_base_back_link" />
+    <child
+      link="uph_left_finger_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-0.015"
+      upper="0"
+      effort="2"
+      velocity="3" />
+  </joint>
+
+  <joint name="uph_right_finger_joint" type="prismatic">
+    <origin
+      xyz="0.1616 -0.013414 -0.068542"
+      rpy="0 0 0" />
+    <parent
+      link="uph_base_back_link" />
+    <child
+      link="uph_right_finger_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="0"
+      upper="0.015"
+      effort="2"
+      velocity="3" />
+      <dynamics damping="0.0" friction="0.0"/>
+  </joint>
+
+  <joint name="uph_blade_joint" type="revolute">
+    <origin
+      xyz="0.103 0 -0.057"
+      rpy="0 0 0.13123" />
+    <parent
+      link="uph_base_back_link" />
+    <child
+      link="uph_blade_link" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0.1"
+      effort="1"
+      velocity="0.1" />
+  </joint>
+
+  <joint name="uph_sensors_base_joint" type="fixed">
+    <origin
+      xyz="0.1767 0.00065756 -0.079684"
+      rpy="0.012615 -0.0070622 0.014287" />
+    <parent
+      link="uph_base_back_link" />
+    <child
+      link="uph_sensors_base_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <joint name='uph_camera_1_base_joint' type='fixed'>
+    <origin
+      xyz="0 -0.025 0"
+      rpy="-1.5707 0 0" />
+    <parent
+      link="uph_sensors_base_link" />
+    <child
+      link="uph_camera_1_base_link" />
+  </joint>
+
+  <joint name='uph_camera_2_base_joint' type='fixed'>
+    <origin
+      xyz="0 0.025 0"
+      rpy="1.5707 0 0" />
+    <parent
+      link="uph_sensors_base_link" />
+    <child
+      link="uph_camera_2_base_link" />
+  </joint>
+
+      <!-- xyz="0.2042 0.0007 -0.0718"
+      rpy="0 0 0" /> -->
+  <joint name='uph_grasp_joint' type='fixed'>
+    <origin
+      xyz="0.2042 0.0007 -0.0718"
+      rpy="0 0 0" />
+    <parent
+      link="uph_base_back_link" />
+    <child
+      link="uph_grasp_link" />
+  </joint>
+
+
+
+</robot>

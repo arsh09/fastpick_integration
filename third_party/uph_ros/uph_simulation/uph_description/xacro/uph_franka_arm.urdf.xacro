@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+
+  <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro"/>
+  <!-- <xacro:include filename="$(find franka_description)/robots/hand.xacro"/> -->
+  <xacro:include filename="$(find uph_description)/xacro/uph_gripper.xacro"/>
+
+
+
+  <xacro:panda_arm />
+
+  <joint name="panda_uph_joint" type="fixed">
+    <parent link="panda_link8"/>
+    <child link="uph_base_back_link"/>
+    <origin xyz="-0.05 0 0" rpy="0 -${pi/2} ${pi}"/>
+  </joint>
+
+
+</robot>

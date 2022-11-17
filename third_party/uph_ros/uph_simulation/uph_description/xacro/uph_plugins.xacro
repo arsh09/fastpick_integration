@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="uph_gripper"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+   <gazebo>
+      <plugin name="separation_mimic_joints" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+        <joint>uph_right_separation_joint</joint>
+        <mimicJoint>uph_left_separation_joint</mimicJoint>
+        <multiplier>-1</multiplier>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+      <plugin name="finger_mimic_joints" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+        <joint>uph_right_finger_joint</joint>
+        <mimicJoint>uph_left_finger_joint</mimicJoint>
+        <multiplier>-1</multiplier>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace></robotNamespace>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        <legacyModeNS>true</legacyModeNS>
+      </plugin>
+  </gazebo>
+
+</robot>
