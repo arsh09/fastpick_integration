@@ -32,9 +32,9 @@
   <!-- Planning Pipelines -->
   <group ns="move_group/planning_pipelines">
     <!-- CHOMP -->
-    <!-- <include ns="chomp" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
+    <include ns="chomp" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
       <arg name="pipeline" value="chomp" />
-    </include> -->
+    </include>
 
     <!-- OMPL -->
     <include ns="ompl" file="$(find panda_moveit_config)/launch/planning_pipeline.launch.xml">
@@ -74,10 +74,10 @@
     <!-- load these non-default MoveGroup capabilities -->
     
     <param name="capabilities" value="
-                  move_group/ExecuteTaskSolutionCapability
+
                   " />
    
-
+                  <!-- move_group/ExecuteTaskSolutionCapability -->
     <!-- inhibit these default MoveGroup capabilities -->
     <!--
     <param name="disable_capabilities" value="

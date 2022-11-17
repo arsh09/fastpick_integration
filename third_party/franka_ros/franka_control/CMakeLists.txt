@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_srvs
 )
 
-find_package(Franka 0.9.0 QUIET)
+find_package(Franka 0.8.0 QUIET)
 if(NOT Franka_FOUND)
   find_package(Franka 0.8.0 REQUIRED)
 endif()
