@@ -1,6 +1,3 @@
-[submodule "third_party/rasberry_perception"]
-	path = third_party/rasberry_perception
-	url = https://github.com/arsh09/rasberry_perception.git
 [submodule "third_party/camera_umd"]
 	path = third_party/camera_umd
 	url = https://github.com/ros-drivers/camera_umd.git
