@@ -835,7 +835,7 @@ int main(int argc, char **argv)
 
 	ros::Subscriber pos_cmd_sub = nh.subscribe("/pos_cmd", 1, positionCb);
 
-	std::string ethercat_interface = "enp65s0";
+	std::string ethercat_interface = "enp1s0f0";
 
 	pthread_create(&thread_statecheck, NULL, ecat_statecheck, (void*) &ctime);
 	pthread_create(&thread_pdo, NULL, ecat_pdotransfer, (void*) &ctime);
