@@ -268,7 +268,7 @@ class MaskToDepthFilter:
         '''
 
         self.base_to_cam_transform = self.find_base_to_camera_rotation( "panda_link0", "top_camera_color_optical_frame")
-        self.base_to_grasp_link_transform = self.find_base_to_camera_rotation( "panda_link0", "fastpick_grasp_link")
+        self.base_to_grasp_link_transform = self.find_base_to_camera_rotation( "panda_link0", "uph_grasp_link")
 
         full_mask = np.zeros( color.shape[:2] , dtype=np.uint8)
 

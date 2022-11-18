@@ -35,8 +35,8 @@ class FastPickBerryDetection:
         rgb_image_topic = rospy.get_param("~rbg_image", "/color/image_raw")
         detect_berry_topic = rospy.get_param("~berry_results", "~/detected_berries")
         model_path = rospy.get_param("~model_path", "")
-
-        # bridge to convert sensor_msgs/Image -> Numpy Array
+ 
+        # bridge to convert sensor_msgs/Image -> Numpy Array 
         self.bridge = CvBridge()
 
         # susbcribe to image topic 
