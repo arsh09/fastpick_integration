@@ -1,0 +1,12 @@
+<launch>
+    
+    <group>
+
+        <machine name="arshad" address="10.101.8.62" user="arshad" password="123" env-loader="~/.ros_remote/fastpick_segmentation.sh" default="true">
+        </machine>
+        <include file="$(find fastpick_perception)/launch/fastpick_perception_bringup.launch" >
+        </include>
+
+    </group>
+
+</launch>

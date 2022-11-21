@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <launch>
 
-    <arg name="color_topic" default="/color/image_raw" />
-    <arg name="depth_topic" default="/aligned_depth_to_color/image_raw" />
-    <arg name="caminfo_topic" default="/aligned_depth_to_color/camera_info" />
+    <arg name="color_topic" default="/camera/color/image_raw" />
+    <arg name="depth_topic" default="/camera/aligned_depth_to_color/image_raw" />
+    <arg name="caminfo_topic" default="/camera/aligned_depth_to_color/camera_info" />
     <arg name="berry_results"  default="/detected_berries" />
     <arg name="model_path"  default="" />
 
