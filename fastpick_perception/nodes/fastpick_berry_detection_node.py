@@ -179,9 +179,10 @@ class FastPickBerryDetection:
 
                 berries_msg.berries.append( berry )
 
-        self.self.image_publisher( self.bridge.cv2_to_imgmsg(image) )
+        image = image.astype( np.uint8 )
+        self.image_publisher.publish( self.bridge.cv2_to_imgmsg(image, 'bgr8') )
         self.berry_publisher.publish( berries_msg )
-
+        rospy.logerr("publishing detection results {}".format( image.dtype ) )
         return image 
  
     def start_perception(self): 
@@ -197,7 +198,7 @@ class FastPickBerryDetection:
                 - pass the predicted mask to post-filtering  
 
         '''
-        
+        rate = rospy.Rate(30)
         rospy.loginfo("Please select '{}' window and press ESC to close the node.".format( self.cv_window_name ))
         while not rospy.is_shutdown(): 
             try:
@@ -210,31 +211,32 @@ class FastPickBerryDetection:
                     mask = cv2.cvtColor( mask, cv2.COLOR_RGB2BGR)
                     image = self.handle_find_contour_and_bounding_box ( image, mask )
                     image = imutils.resize( image, width = W, height = H )
-                    cv2.imshow(self.cv_window_name, image ) 
+                    # cv2.imshow(self.cv_window_name, image ) 
                 else: 
                     rospy.logwarn("Unable to find image in the topic. Did you subscribe to correct topic?")
 
-                k = cv2.waitKey(1)
-                if k == 27: 
-                    cv2.destroyAllWindows()
-                    break
+                rate.sleep()
+                # k = cv2.waitKey(1)
+                # if k == 27: 
+                #     cv2.destroyAllWindows()
+                #     break
 
-                elif k == -1:
-                    continue
-                else : 
-                    if k == ord('s'): 
-                        self.start_perception()
-                    if k == ord('r'): 
-                        msg = ErrorRecoveryActionGoal()
-                        self.franka_recovery_as.publish( msg ) 
+                # elif k == -1:
+                #     continue
+                # else : 
+                #     if k == ord('s'): 
+                #         self.start_perception()
+                #     if k == ord('r'): 
+                #         msg = ErrorRecoveryActionGoal()
+                #         self.franka_recovery_as.publish( msg ) 
 
-                    if k == ord('c'):
-                        msg = GoalID()
-                        self.pick_and_place_goal_cancel_pub.publish(msg)
-                        self.start_perception()
+                #     if k == ord('c'):
+                #         msg = GoalID()
+                #         self.pick_and_place_goal_cancel_pub.publish(msg)
+                #         self.start_perception()
             
             except KeyboardInterrupt:
-                cv2.destroyAllWindows()
+                # cv2.destroyAllWindows()
                 break
 
 
