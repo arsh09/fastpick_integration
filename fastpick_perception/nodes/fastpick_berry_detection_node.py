@@ -46,6 +46,7 @@ class FastPickBerryDetection:
 
         # # publish back detected berries 
         self.berry_publisher = rospy.Publisher( detect_berry_topic, StrawberryObjects, queue_size = 10)
+        self.image_publisher = rospy.Publisher( detect_berry_topic + "/image_raw", Image, queue_size = 1 )
 
         # ENET mode class
         if (model_path == ""):
@@ -178,6 +179,7 @@ class FastPickBerryDetection:
 
                 berries_msg.berries.append( berry )
 
+        self.self.image_publisher( self.bridge.cv2_to_imgmsg(image) )
         self.berry_publisher.publish( berries_msg )
 
         return image 
