@@ -177,7 +177,7 @@ class FastPickBerryDetection:
                 berry.id = count+1
 
                 berries_msg.berries.append( berry )
-
+        rospy.loginfo(berries_msg)
         self.berry_publisher.publish( berries_msg )
 
         return image 
@@ -208,7 +208,8 @@ class FastPickBerryDetection:
                     mask = cv2.cvtColor( mask, cv2.COLOR_RGB2BGR)
                     image = self.handle_find_contour_and_bounding_box ( image, mask )
                     image = imutils.resize( image, width = W, height = H )
-                    cv2.imshow(self.cv_window_name, image ) 
+                    # cv2.imshow(self.cv_window_name, image )
+                    rospy.loginfo("Working..." ) 
                 else: 
                     rospy.logwarn("Unable to find image in the topic. Did you subscribe to correct topic?")
 

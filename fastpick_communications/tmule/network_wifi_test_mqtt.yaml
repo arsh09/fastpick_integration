@@ -23,7 +23,7 @@ windows:
     panes: 
       - rosparam set use_sim_time true
       - rosrun rosbag play /home/arshad/robot_highway/data_ws/src/rasberry_fruitcounting/berry_tracker/bags/stream_1_camera_polytunnel.bag
-        --clock --quiet --loop --rate 1.0
+        --clock --loop 
 
   # convert uncompressed to compressed
   - name: image_compressed_converters
