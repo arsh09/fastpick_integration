@@ -30,8 +30,10 @@ def network_throughput( interface_name , count, ping_ms_time = 0.0 ) :
     latency_and_throughput = ""
     for line in cmd_out : 
         if "Average" not in line:
+            line = line.replace(" AM", "-AM")
+            line = line.replace(" PM", "-PM")
             line = re.sub(" +", ",", line).split(",")
-            line = ",".join(line[:-1])
+            line = ",".join(line)
             latency_and_throughput =  "{},{}".format(line,ping_ms_time)
             break
 
@@ -66,7 +68,7 @@ if __name__ == "__main__":
 
     interface_name, ip_addr, counts_in_seconds , file_append_name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 
-    headers = "time,interface,rxpck/s,txpck/sec,rxkB/s,txkB/s,rxcmp/s,txcmp/s,rxmcst/s,%ifutil,latency"
+    headers = "time,interface,rxpck/s,txpck/s,rxkB/s,txkB/s,rxcmp/s,txcmp/s,rxmcst/s,ifutil,latency"
 
     network_data = []
     network_data.append( headers.split(",") )
@@ -76,26 +78,24 @@ if __name__ == "__main__":
     cmd = shlex.split(cmd)
     # cmd_rosbag = sp.Popen( cmd )
 
-    for count in range( int( counts_in_seconds )  ):
-        try:
-            ping_ms_time = netowrk_latency( ip_addr )
-            value = network_throughput( interface_name , 1, ping_ms_time)
-            network_data.append(value)    
-            print ( "Count: {} - {}".format(count, value) ) 
-            time.sleep(0.5)
-        except KeyboardInterrupt: 
-            break
+    try : 
 
+        for count in range( int( counts_in_seconds )  ):
+            try:
+                ping_ms_time = netowrk_latency( ip_addr )
+                value = network_throughput( interface_name , 1, ping_ms_time)
+                network_data.append(value)    
+                print ( "Count: {} - {}".format(count, value) ) 
+                time.sleep(0.5)
+            except KeyboardInterrupt: 
+                break
 
-    csv_filename = "./network_test_{}_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "-"), counts_in_seconds, file_append_name )
+    except KeyboardInterrupt:
+        pass
+
+    csv_filename = "./network_test_{}_{}_{}_{}.csv".format( interface_name , ip_addr.replace(".", "_"), counts_in_seconds, file_append_name )
     with open(csv_filename, "w") as f: 
-        wr = csv.writer(f)
+        wr = csv.writer(f, delimiter='\t', )
         wr.writerows(network_data)
 
     print("Network test is saved in {}".format(csv_filename))
-
-    # for proc in psutil.process_iter():
-    #     if "record" in proc.name() and set(cmd[2:]).issubset(proc.cmdline()):
-    #         proc.send_signal(sp.signal.SIGINT)
-
-    # cmd_rosbag.send_signal(sp.signal.SIGINT)
