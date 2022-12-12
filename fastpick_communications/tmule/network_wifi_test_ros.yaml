@@ -10,21 +10,21 @@ init_cmd : |
   # load ws details
   source_filepath $HOME .bashrc
   source_filepath $HOME/fastpick_ws/devel setup.bash
-  export ROS_MASTER_URI=http://10.101.65.2:11311
-  export ROS_HOSTNAME=192.168.1.47
+  export ROS_MASTER_URI=http://11.0.0.2:11311
+  export ROS_HOSTNAME=11.0.0.1
   
 
 windows: 
   - name: roscore
     panes: 
-      - roscore
+      - echo "Is roscore running"
     check: 'rostopic list | grep rosout'
 
   # play robag
   - name: rosbag
     panes: 
       - rosparam set use_sim_time true
-      - rosrun rosbag play /home/arshad/robot_highway/data_ws/src/rasberry_fruitcounting/berry_tracker/bags/stream_1_camera_polytunnel.bag
+      - rosrun rosbag play /media/arshad/Samsung_T5/Lincoln/Projects/RobotHighway/rosbags/bags/stream_1_camera_polytunnel.bag
         --clock --quiet --loop --rate 1.0
 
   - name: debug

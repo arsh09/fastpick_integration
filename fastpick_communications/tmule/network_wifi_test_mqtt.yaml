@@ -10,7 +10,9 @@ init_cmd : |
   # load ws details
   source_filepath $HOME .bashrc
   source_filepath $HOME/fastpick_ws/devel setup.bash
-
+  export ROS_MASTER_URI=http://localhost:11311
+  export ROS_HOSTNAME=localhost
+  
 
 windows: 
   - name: roscore
@@ -22,7 +24,7 @@ windows:
   - name: rosbag
     panes: 
       - rosparam set use_sim_time true
-      - rosrun rosbag play /home/arshad/robot_highway/data_ws/src/rasberry_fruitcounting/berry_tracker/bags/stream_1_camera_polytunnel.bag
+      - rosrun rosbag play /media/arshad/Samsung_T5/Lincoln/Projects/RobotHighway/rosbags/bags/stream_1_camera_polytunnel.bag
         --clock --quiet --loop --rate 1.0
 
   # convert uncompressed to compressed
