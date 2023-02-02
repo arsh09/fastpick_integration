@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<launch>
+  <!-- the IP of the coordination_server rosbridge server -->
+  <arg name="mqtt_bridge_ip" default="$(optenv MQTT_BRIDGE_IP localhost)" />
+
+  <!-- the port of the coordination_server mqtt_bridge server -->
+  <arg name="mqtt_bridge_port" default="$(optenv MQTT_BRIDGE_PORT 8883)" />
+
+  <!-- the control port for the dynamic server -->
+  <arg name="control_topic" default="__dynamic_server" />
+
+  <node pkg="mqtt_bridge" name="mosquitto_server" type="mosquitto_server.sh" output="screen" args="$(arg mqtt_bridge_port)"/>
+
+  <node pkg="mqtt_bridge" name="mqtt_bridge" type="mqtt_bridge_node.py" output="screen" respawn="true">
+    <rosparam subst_value="True">
+mqtt:
+  client:
+    protocol: 4      # MQTTv311
+  connection:
+    host: $(arg mqtt_bridge_ip)
+    port: $(arg mqtt_bridge_port)
+    keepalive: 60
+# Default is json serialiser, msgpack is more efficient
+#serializer: msgpack:dumps
+#deserializer: msgpack:loads
+bridge:
+  # Dynamic Connection Server
+  - factory: mqtt_bridge.bridge:DynamicBridgeServer
+    control_topic: '$(arg control_topic)'
+    </rosparam>
+  </node>
+</launch>
