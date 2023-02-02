@@ -1,0 +1,26 @@
+<!--  This file consumes information on image_ns/image_raw and depth_ns/image_raw to and publishes results from the detection_server.py backend -->
+<launch>
+<!-- Uncomment this block to add the ability to auto-launch a docker environment with the required detection backend
+        otherwise launch a detection backend rosrun rasberry_perception detection_server.py -backend "backend_name" -backend_arg1 "config.yourconfig"
+    <arg name="backend" default=""/>
+    <arg name="password" default="'Contact rkirk@lincoln.ac.uk'"/>
+    <group if="$(eval arg('backend') != '')">
+        <node pkg="rasberry_perception" name="rasberry_perception_detection_backend" type="run_backend.sh" args="$(arg backend) $(arg password)" output="screen" required="true"/>
+    </group>
+-->
+
+    <arg name="image_ns" default=""/>
+    <arg name="depth_ns" default=""/>
+    <arg name="score" default="0.3"/>
+    <arg name="show_vis" default="false"/>
+    <arg name="publish_source" default="false"/>
+
+    <!-- client -->
+    <node pkg="rasberry_perception" name="rasberry_perception_detector" type="detection_client.py" output="screen" respawn="true">
+        <param name="image_ns" type="str" value="$(arg image_ns)"/>
+        <param name="depth_ns" type="str" value="$(arg depth_ns)"/>
+        <param name="score" type="double" value="$(arg score)"/>
+        <param name="show_vis" type="bool" value="$(arg show_vis)"/>
+        <param name="publish_source" type="bool" value="$(arg publish_source)"/>
+    </node>
+</launch>
