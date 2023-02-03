@@ -496,8 +496,6 @@ Visualization Manager:
           Value: false
         panda_link8:
           Value: false
-        top_camera_aligned_depth_to_color_frame:
-          Value: false
         top_camera_color_frame:
           Value: false
         top_camera_color_optical_frame:
@@ -566,11 +564,9 @@ Visualization Manager:
                                 {}
                           uph_base_back_link:
                             top_camera_link:
-                              top_camera_aligned_depth_to_color_frame:
+                              top_camera_color_frame:
                                 top_camera_color_optical_frame:
                                   {}
-                              top_camera_color_frame:
-                                {}
                               top_camera_depth_frame:
                                 top_camera_depth_optical_frame:
                                   {}
@@ -685,9 +681,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2603949308395386
+      Pitch: 0.1153949499130249
       Target Frame: panda_link0
-      Yaw: 5.274901390075684
+      Yaw: 5.4699015617370605
     Saved: ~
 Window Geometry:
   Camera Color Feed:
@@ -717,5 +713,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 0
+  X: 72
   Y: 27
